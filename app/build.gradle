@@ -19,9 +19,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding {
-        enabled = true
-    }
+    buildFeatures.dataBinding = true
 
     buildTypes {
         release {
@@ -63,13 +61,16 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     //Fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
-    //RxKotlin
-    implementation "io.reactivex.rxjava2:rxkotlin:3.0.1"
-    implementation 'io.reactivex.rxjava2:rxandroid:3.0.0'
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //Google Map
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
