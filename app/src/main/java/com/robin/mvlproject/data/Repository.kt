@@ -1,4 +1,6 @@
 package com.robin.mvlproject.data
 
-class Repository {
+import javax.inject.Inject
+
+class Repository @Inject constructor(){
 }
