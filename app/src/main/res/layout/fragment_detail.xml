@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_label"
+            android:id="@+id/tv_detail_label_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -24,18 +24,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_detail_label_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="경기도 성남시"
             android:textColor="@color/black"
             android:textSize="36dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_label"
-            app:layout_constraintStart_toEndOf="@+id/tv_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_label" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_detail_label_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_label_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_label_title" />
 
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_detail_aqi_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -44,32 +45,33 @@
             android:textColor="@color/black"
             android:textSize="36dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_label" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_label_title" />
 
         <TextView
+            android:id="@+id/tv_detail_aqi_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="71"
             android:textColor="@color/black"
             android:textSize="36dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_detail_aqi_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_aqi_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_aqi_title" />
 
         <EditText
-            android:id="@+id/et_nickname"
+            android:id="@+id/et_detail_nickname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginBottom="24dp"
             android:textSize="32dp"
             android:hint="Nickname"
-            app:layout_constraintBottom_toTopOf="@+id/tv_save"
-            app:layout_constraintEnd_toEndOf="@+id/tv_save"
-            app:layout_constraintStart_toStartOf="@+id/tv_save" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_detail_save"
+            app:layout_constraintEnd_toEndOf="@+id/tv_detail_save"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_save" />
 
         <TextView
-            android:id="@+id/tv_save"
+            android:id="@+id/tv_detail_save"
             android:layout_width="0dp"
             android:background="@drawable/bg_button"
             android:layout_height="wrap_content"
