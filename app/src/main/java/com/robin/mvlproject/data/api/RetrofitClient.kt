@@ -1,6 +1,5 @@
-package com.lwj.memorizer.data.api
+package com.robin.mvlproject.data.api
 
-import com.robin.mvlproject.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
