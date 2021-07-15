@@ -59,6 +59,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
                     android:text="A"
+                    android:textColor="@color/purple_500"
                     android:textSize="32dp"
                     app:layout_constraintEnd_toStartOf="@id/tv_home_label_a_address"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +71,7 @@
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="4dp"
-                    android:text="@{vm.location}"
+                    android:text="@{vm.locationA}"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toTopOf="@id/divider_1"
@@ -96,6 +97,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
                     android:text="B"
+                    android:textColor="@color/teal_200"
                     android:textSize="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_home_label_b_address"
@@ -108,13 +110,14 @@
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="4dp"
-                    android:text="경기도 용인시"
+                    android:text="@{vm.locationB}"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/divider_2"
                     app:layout_constraintStart_toEndOf="@id/tv_home_label_b_title"
-                    app:layout_constraintTop_toBottomOf="@id/divider_1" />
+                    app:layout_constraintTop_toBottomOf="@id/divider_1"
+                    tools:text="경기도 용인시" />
 
                 <View
                     android:id="@+id/divider_2"
@@ -127,18 +130,18 @@
 
                 <TextView
                     android:id="@+id/tv_home_marker"
-                    android:layout_width="wrap_content"
                     onSafeClick="@{() -> vm.onMarkerButtonClicked()}"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:gravity="center"
                     android:paddingHorizontal="24dp"
-                    tools:text="Set A"
-                    bind:setMarkerButton="@{vm.markerState}"
                     android:textSize="32dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_home_label_b_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/divider_2"
-                    app:layout_constraintTop_toTopOf="@id/tv_home_label_a_title" />
+                    app:layout_constraintTop_toTopOf="@id/tv_home_label_a_title"
+                    bind:setMarkerButton="@{vm.markerState}"
+                    tools:text="Set A" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

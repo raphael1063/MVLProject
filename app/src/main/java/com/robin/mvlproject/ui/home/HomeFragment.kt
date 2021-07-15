@@ -1,9 +1,7 @@
 package com.robin.mvlproject.ui.home
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -11,10 +9,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
+import com.robin.mvlproject.data.entities.MarkerButtonState.*
 import com.robin.mvlproject.databinding.FragmentHomeBinding
+import com.robin.mvlproject.ext.getCurrentLocation
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -50,11 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
-                val locationManager =
-                    requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-                val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                currentLatitude = location?.latitude ?: 0.0
-                currentLongitude = location?.longitude ?: 0.0
+                currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
+                currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
                 viewModel.init(currentLatitude, currentLongitude)
                 val mapFragment =
                     childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
@@ -70,21 +69,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun observe() {
+        viewModel.markerState.observe(this, { state ->
+            when (state) {
+                A_SELECTED -> {
+                    map?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(currentLatitude, currentLongitude))
+                            .title("A")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                    )
+                }
+                B_SELECTED -> {
+                    map?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(currentLatitude, currentLongitude))
+                            .title("B")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                    )
+                }
+            }
+        })
     }
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-        val seoul = LatLng(currentLatitude, currentLongitude)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 16F))
+        val currentLocation = LatLng(currentLatitude, currentLongitude)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16F))
         map.setOnCameraMoveListener(this)
     }
 
     override fun onCameraMove() {
         Timber.d("CameraPosition = ${map?.cameraPosition}")
-        val latitude = map?.cameraPosition?.target?.latitude
-        val longitude = map?.cameraPosition?.target?.longitude
-        if (latitude != null && longitude != null)
-            viewModel.onCameraMoved(latitude, longitude)
+        currentLatitude = map?.cameraPosition?.target?.latitude ?: 0.0
+        currentLongitude = map?.cameraPosition?.target?.longitude ?: 0.0
+        viewModel.onCameraMoved(currentLatitude, currentLongitude)
     }
 
     companion object {

@@ -21,8 +21,13 @@ class HomeViewModel @Inject constructor(
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
 
-    private val _location = MutableLiveData<String>()
-    val location: LiveData<String> = _location
+    private var currentLocation = ""
+
+    private val _locationA = MutableLiveData<String>()
+    val locationA: LiveData<String> = _locationA
+
+    private val _locationB = MutableLiveData<String>()
+    val locationB: LiveData<String> = _locationB
 
     private val _markerState = MutableLiveData(NOTHING_SELECTED)
     val markerState: LiveData<MarkerButtonState> = _markerState
@@ -68,7 +73,7 @@ class HomeViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ address ->
                 Timber.d("Location RESULT!! = $address")
-                _location.value = address
+                currentLocation = address
             }, {
                 Timber.d("Location FAILED!! = ${it.printStackTrace()}")
             }).addTo(compositeDisposable)
@@ -79,12 +84,13 @@ class HomeViewModel @Inject constructor(
         when(_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
+                _locationA.value = currentLocation
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
+                _locationB.value = currentLocation
             }
             B_SELECTED -> {
-
             }
         }
     }
