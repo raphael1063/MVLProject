@@ -1,7 +1,10 @@
 package com.robin.mvlproject.ui.home
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -26,8 +29,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     private var map: GoogleMap? = null
 
+    private var currentLatitude: Double = 0.0
+
+    private var currentLongitude: Double = 0.0
+
     override fun start() {
         binding.vm = viewModel
+
+        val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        currentLatitude = location?.latitude ?: 0.0
+        currentLongitude = location?.longitude ?: 0.0
+
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
@@ -61,9 +74,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-        val seoul = LatLng(37.56, 126.97)
-        map.addMarker(MarkerOptions().position(seoul).title("서울"))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 10F))
+        val seoul = LatLng(currentLatitude, currentLongitude)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 16F))
         map.setOnCameraMoveListener(this)
     }
 
