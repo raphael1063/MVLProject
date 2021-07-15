@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.entities.MarkerButtonState
+import com.robin.mvlproject.data.entities.MarkerButtonState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -19,12 +21,24 @@ class HomeViewModel @Inject constructor(
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
 
-    init {
-        getAQI(37.4769, 126.9562)
-        getLocation(37.4769, 126.9562, "ko")
+    private val _location = MutableLiveData<String>()
+    val location: LiveData<String> = _location
+
+    private val _markerState = MutableLiveData(NOTHING_SELECTED)
+    val markerState: LiveData<MarkerButtonState> = _markerState
+
+    fun init(lat: Double, lng: Double) {
+        getAQI(lat, lng)
+        getLocation(lat, lng, "en")
     }
 
-    fun getAQI(lat: Double, lng: Double) {
+    fun onCameraMoved(lat: Double, lng: Double) {
+        getAQI(lat, lng)
+        getLocation(lat, lng, "en")
+    }
+
+    //해당위치의 대기질지수를 받아오는 API Call
+    private fun getAQI(lat: Double, lng: Double) {
         repository.getAQI(lat, lng)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -40,14 +54,38 @@ class HomeViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
-    fun getLocation(lat: Double, lng: Double, lang: String) {
+    //위치정보를 받는 API Call
+    private fun getLocation(lat: Double, lng: Double, lang: String) {
         repository.getLocation(lat, lng, lang)
             .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
+            .map { result ->
+                //administrative 리스트를 내림차순으로 정렬
+                val list = result.localityInfo.administrative.sortedWith(compareBy { -it.order })
+                val address = "${list[1].name} ${list[0].name}"
+                address
+            }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                Timber.d("Location RESULT!! = $result")
+            .subscribe({ address ->
+                Timber.d("Location RESULT!! = $address")
+                _location.value = address
             }, {
                 Timber.d("Location FAILED!! = ${it.printStackTrace()}")
             }).addTo(compositeDisposable)
+    }
+
+
+    fun onMarkerButtonClicked() {
+        when(_markerState.value) {
+            NOTHING_SELECTED -> {
+                _markerState.value = A_SELECTED
+            }
+            A_SELECTED -> {
+                _markerState.value = B_SELECTED
+            }
+            B_SELECTED -> {
+
+            }
+        }
     }
 }
