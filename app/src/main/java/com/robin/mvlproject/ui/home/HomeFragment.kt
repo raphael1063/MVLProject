@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,16 +14,20 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
 import com.robin.mvlproject.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
 
+    private val viewModel: HomeViewModel by viewModels()
+
     private var map: GoogleMap? = null
 
     override fun start() {
-        Timber.d("start!!!!!!!!!!!")
+        binding.vm = viewModel
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
@@ -64,12 +69,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         map.setOnCameraMoveListener(this)
     }
 
+    override fun onCameraMove() {
+        Timber.d("CameraPosition = ${map?.cameraPosition}")
+        val latitude = map?.cameraPosition?.target?.latitude
+        val longitude = map?.cameraPosition?.target?.longitude
+        if(latitude != null && longitude != null)
+            viewModel.getAQI(latitude, longitude)
+    }
+
     companion object {
         val instance = HomeFragment()
     }
 
-    override fun onCameraMove() {
-        Timber.d("CameraPosition = ${map?.cameraPosition}")
-//        binding.tvHomeLabelA.text = "lat = ${map?.cameraPosition?.target?.latitude} \n lng = ${map?.cameraPosition?.target?.longitude}"
-    }
 }
