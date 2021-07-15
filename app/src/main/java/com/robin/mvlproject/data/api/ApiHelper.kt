@@ -1,9 +1,12 @@
 package com.robin.mvlproject.data.api
 
 import com.robin.mvlproject.data.entities.AQIResult
+import com.robin.mvlproject.data.entities.LocationResult
 import io.reactivex.Single
 
-interface AQIApiHelper {
+interface ApiHelper {
 
     fun getAQI(lat: Double, lng: Double): Single<AQIResult>
+
+    fun getLocation(lat:Double, lng: Double, lang: String): Single<LocationResult>
 }

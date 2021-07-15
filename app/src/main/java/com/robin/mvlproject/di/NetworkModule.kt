@@ -1,9 +1,12 @@
 package com.robin.mvlproject.di
 
+import android.location.Location
 import com.robin.mvlproject.BuildConfig
-import com.robin.mvlproject.data.api.AQIApiHelper
-import com.robin.mvlproject.data.api.AQIApiHelperImpl
+import com.robin.mvlproject.data.api.ApiHelper
+import com.robin.mvlproject.data.api.ApiHelperImpl
 import com.robin.mvlproject.data.api.AQIApiService
+import com.robin.mvlproject.data.api.LocationApiService
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,7 +25,12 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-    fun provideBaseAQIUrl() = BuildConfig.AQIUrl
+    @Named("AQI")
+    fun provideBaseAQIUrl() = BuildConfig.AQI_URL
+
+    @Provides
+    @Named("Location")
+    fun provideBaseLocationUrl() = BuildConfig.LOCATION_URL
 
     @Provides
     @Singleton
@@ -46,7 +55,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit =
+    @Named("AQIRetrofit")
+    fun provideAQIRetrofit(
+        okHttpClient: OkHttpClient,
+        @Named("AQI") BASE_URL: String
+    ): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
@@ -56,9 +69,29 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAQIApiService(retrofit: Retrofit): AQIApiService = retrofit.create(AQIApiService::class.java)
+    @Named("LocationRetrofit")
+    fun provideLocationRetrofit(
+        okHttpClient: OkHttpClient,
+        @Named("Location") BASE_URL: String
+    ): Retrofit =
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
 
     @Provides
     @Singleton
-    fun provideAQIApiHelper(aqiApiHelper: AQIApiHelperImpl): AQIApiHelper = aqiApiHelper
+    fun provideAQIApiService(@Named("AQIRetrofit") retrofit: Retrofit): AQIApiService =
+        retrofit.create(AQIApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideLocationApiService(@Named("LocationRetrofit") retrofit: Retrofit): LocationApiService =
+        retrofit.create(LocationApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAQIApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
 }

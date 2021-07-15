@@ -16,7 +16,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "AQIUrl", '"https://api.waqi.info"'
+        buildConfigField "String", "AQI_URL", '"https://api.waqi.info"'
+        buildConfigField "String", "LOCATION_URL", '"https://api.bigdatacloud.net"'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

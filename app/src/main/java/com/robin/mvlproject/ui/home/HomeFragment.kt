@@ -39,8 +39,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 }
             }
 
-
-
         when (PackageManager.PERMISSION_GRANTED) {
             ContextCompat.checkSelfPermission(
                 requireContext(),
