@@ -5,6 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.robin.mvlproject.ui.price.PriceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="36.564"
+            android:text="@{vm.labelA.locationInfo}"
+            tools:text="경기도 성남시"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toEndOf="@+id/tv_price_label_a_title"
@@ -40,7 +46,8 @@
             android:id="@+id/tv_price_label_a_aqi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="api : 71"
+            android:text="@{`AQI : ` + vm.labelA.aqi}"
+            tools:text="AQI : 71"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toStartOf="@+id/tv_price_label_a_location"
@@ -50,7 +57,9 @@
             android:id="@+id/tv_price_label_a_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nickname: robin"
+            android:text="@{`Nickname : ` + vm.labelA.nickname}"
+            android:visibility="@{vm.labelA.nickname == null ? View.GONE : View.VISIBLE}"
+            tools:text="Nickname: robin"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toStartOf="@+id/tv_price_label_a_aqi"
@@ -72,7 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="36.564"
+            android:text="@{vm.labelB.locationInfo}"
+            tools:text="경기도 용인시"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toEndOf="@+id/tv_price_label_b_title"
@@ -82,7 +92,8 @@
             android:id="@+id/tv_price_label_b_aqi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="api : 71"
+            android:text="@{`AQI : ` + vm.labelB.aqi}"
+            tools:text="AQI : 71"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toStartOf="@+id/tv_price_label_b_location"
@@ -92,7 +103,9 @@
             android:id="@+id/tv_price_label_b_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nickname: robin"
+            android:visibility="@{vm.labelB.nickname == null ? View.GONE : View.VISIBLE}"
+            android:text="@{`Nickname : ` + vm.labelB.nickname}"
+            tools:text="Nickname: robin"
             android:textColor="@color/black"
             android:textSize="32dp"
             app:layout_constraintStart_toStartOf="@+id/tv_price_label_b_aqi"

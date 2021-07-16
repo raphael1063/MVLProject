@@ -33,7 +33,11 @@ class DetailViewModel @Inject constructor(
     fun onSaveButtonClicked() {
         _label.value?.let {
             _updateLabel.value = it.apply {
-                nickname = this@DetailViewModel.nickname.value
+                nickname = if(this@DetailViewModel.nickname.value.isNullOrEmpty()) {
+                    null
+                } else {
+                    this@DetailViewModel.nickname.value
+                }
             }
         }
     }
