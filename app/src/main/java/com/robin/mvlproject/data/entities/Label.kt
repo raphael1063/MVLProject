@@ -8,7 +8,7 @@ data class Label(
     val name: LabelType,
     val locationInfo: String,
     val aqi: Int,
-    val nickname: String?
+    var nickname: String?
 ) : Parcelable
 
 enum class LabelType {

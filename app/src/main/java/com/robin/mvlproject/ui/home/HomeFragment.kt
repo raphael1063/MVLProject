@@ -115,6 +115,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 }
             })
         }
+        with(sharedViewModel) {
+            updateLabel.observe(this@HomeFragment, { label ->
+                viewModel.updateLabel(label)
+            })
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {

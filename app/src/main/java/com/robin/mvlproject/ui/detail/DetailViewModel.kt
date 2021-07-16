@@ -17,6 +17,9 @@ class DetailViewModel @Inject constructor(
     private val _label = MutableLiveData<Label>()
     val label: LiveData<Label> = _label
 
+    private val _updateLabel = MutableLiveData<Label>()
+    val updateLabel: LiveData<Label> = _updateLabel
+
     var nickname = MutableLiveData<String>()
 
     fun loadData(label: Label) {
@@ -28,6 +31,10 @@ class DetailViewModel @Inject constructor(
     }
 
     fun onSaveButtonClicked() {
-
+        _label.value?.let {
+            _updateLabel.value = it.apply {
+                nickname = this@DetailViewModel.nickname.value
+            }
+        }
     }
 }

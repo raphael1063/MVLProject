@@ -7,6 +7,7 @@ import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType
+import com.robin.mvlproject.data.entities.LabelType.*
 import com.robin.mvlproject.data.entities.MarkerButtonState
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -113,15 +114,23 @@ class HomeViewModel @Inject constructor(
         when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
-                _labelA.value = Label(LabelType.A, currentLocation, currentAQI, null)
+                _labelA.value = Label(A, currentLocation, currentAQI, null)
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-                _labelB.value = Label(LabelType.B, currentLocation, currentAQI, null)
+                _labelB.value = Label(B, currentLocation, currentAQI, null)
             }
             B_SELECTED -> {
                 _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
             }
+        }
+    }
+
+    fun updateLabel(label: Label) {
+        if(label.name == A) {
+            _labelA.value = label
+        } else {
+            _labelB.value = label
         }
     }
 }

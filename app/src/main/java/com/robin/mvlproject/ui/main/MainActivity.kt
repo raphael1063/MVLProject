@@ -51,6 +51,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
                         .commit()
                 }
             })
+            updateLabel.observe(this@MainActivity, {
+                super.onBackPressed()
+            })
         }
     }
 

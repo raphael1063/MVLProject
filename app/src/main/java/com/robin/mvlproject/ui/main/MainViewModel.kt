@@ -26,6 +26,9 @@ class MainViewModel @Inject constructor(
     private val _openHistory = MutableLiveData<Event<Unit>>()
     val openHistory: LiveData<Event<Unit>> = _openHistory
 
+    private val _updateLabel = MutableLiveData<Label>()
+    val updateLabel: LiveData<Label> = _updateLabel
+
     fun openDetail(label: Label) {
         _openDetail.value = Event(label)
     }
@@ -36,5 +39,9 @@ class MainViewModel @Inject constructor(
 
     fun openHistory() {
         _openHistory.value = Event(Unit)
+    }
+
+    fun updateLabel(label: Label) {
+        _updateLabel.value = label
     }
 }
