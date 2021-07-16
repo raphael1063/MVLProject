@@ -7,7 +7,7 @@ import javax.inject.Inject
 class ApiHelperImpl @Inject constructor(
     private val aqiApiService: AQIApiService,
     private val locationApiService: LocationApiService,
-    private val booksApiService: BooksApiService
+    private val apiService: ApiService
 ) : ApiHelper {
 
     override fun getAQI(lat: Double, lng: Double): Single<AQIResult> =
@@ -17,5 +17,5 @@ class ApiHelperImpl @Inject constructor(
         locationApiService.getLocation(lat, lng, lang)
 
     override fun getBooks(booksRequest: BooksRequest): Single<BooksResult> =
-        booksApiService.getBooks(booksRequest)
+        apiService.getBooks(booksRequest)
 }

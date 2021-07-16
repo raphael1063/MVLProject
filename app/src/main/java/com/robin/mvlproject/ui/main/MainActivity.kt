@@ -21,7 +21,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
     override fun start() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fcv_container, HomeFragment.instance)
-            .addToBackStack(null)
             .commit()
     }
 
@@ -36,9 +35,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
                 }
             })
             openPrice.observe(this@MainActivity, { event ->
-                event.getContentIfNotHandled()?.let { model ->
+                event.getContentIfNotHandled()?.let { list ->
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, PriceFragment.getInstance(model))
+                        .add(R.id.fcv_container, PriceFragment.getInstance(list[0], list[1]))
                         .addToBackStack(null)
                         .commit()
                 }

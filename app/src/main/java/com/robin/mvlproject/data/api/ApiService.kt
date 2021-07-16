@@ -6,7 +6,7 @@ import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface BooksApiService {
+interface ApiService {
 
     @POST("/books")
     fun getBooks(@Body requestBody: BooksRequest): Single<BooksResult>

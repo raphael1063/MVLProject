@@ -41,8 +41,8 @@ class HomeViewModel @Inject constructor(
     private val _actionLabelBClicked = MutableLiveData<Event<Label>>()
     val actionLabelBClicked: LiveData<Event<Label>> = _actionLabelBClicked
 
-    private val _actionBookClicked = MutableLiveData<Event<BooksRequest>>()
-    val actionBookClicked: LiveData<Event<BooksRequest>> = _actionBookClicked
+    private val _actionBookClicked = MutableLiveData<Event<List<Label>>>()
+    val actionBookClicked: LiveData<Event<List<Label>>> = _actionBookClicked
 
     private var currentLatitude = 0.0
     private var currentLongitude = 0.0
@@ -118,29 +118,18 @@ class HomeViewModel @Inject constructor(
         when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
-                _labelA.value = Label(A, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
+                _labelA.value =
+                    Label(A, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-                _labelB.value = Label(B, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
+                _labelB.value =
+                    Label(B, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
             }
             B_SELECTED -> {
-                _actionBookClicked.value = Event(
-                    BooksRequest(
-                        Label(
-                            _labelA.value?.aqi,
-                            _labelA.value?.latitude,
-                            _labelA.value?.longitude,
-                            _labelA.value?.nickname
-                        ),
-                        Label(
-                            _labelB.value?.aqi,
-                            _labelB.value?.latitude,
-                            _labelB.value?.longitude,
-                            _labelB.value?.nickname
-                        )
-                    )
-                )
+                if (_labelA.value != null && _labelB.value != null) {
+                    _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.robin.mvlproject.di
 
-import androidx.room.PrimaryKey
 import com.robin.mvlproject.BuildConfig
 import com.robin.mvlproject.data.api.*
 import dagger.Module
@@ -89,7 +88,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBooksApiService(): BooksApiService = BooksApiServiceImpl()
+    fun provideBooksApiService(): ApiService = ApiServiceImpl()
 
     @Provides
     @Singleton

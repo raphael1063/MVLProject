@@ -19,18 +19,17 @@ class PriceFragment : BaseFragment<FragmentPriceBinding>(
 
     override fun start() {
         binding.vm = viewModel
-        requireArguments().getParcelable<BooksRequest>("booksRequest")?.let {
-            viewModel.loadData(it)
-        }
+            viewModel.loadData(requireArguments().getParcelable("labelA")!!, requireArguments().getParcelable("labelB")!!)
     }
 
     override fun observe() {
     }
 
     companion object {
-       fun getInstance(booksRequest: BooksRequest) = PriceFragment().apply {
+       fun getInstance(labelA: Label, labelB: Label) = PriceFragment().apply {
            arguments = Bundle().apply {
-               putParcelable("booksRequest", booksRequest)
+               putParcelable("labelA", labelA)
+               putParcelable("labelB", labelB)
            }
        }
     }

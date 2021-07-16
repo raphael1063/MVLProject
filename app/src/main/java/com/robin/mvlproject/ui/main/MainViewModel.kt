@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     private val _openDetail = MutableLiveData<Event<Label>>()
     val openDetail: LiveData<Event<Label>> = _openDetail
 
-    private val _openPrice = MutableLiveData<Event<BooksRequest>>()
-    val openPrice: LiveData<Event<BooksRequest>> = _openPrice
+    private val _openPrice = MutableLiveData<Event<List<Label>>>()
+    val openPrice: LiveData<Event<List<Label>>> = _openPrice
 
     private val _openHistory = MutableLiveData<Event<Unit>>()
     val openHistory: LiveData<Event<Unit>> = _openHistory
@@ -34,8 +34,8 @@ class MainViewModel @Inject constructor(
         _openDetail.value = Event(label)
     }
 
-    fun openPrice(model: BooksRequest) {
-        _openPrice.value = Event(model)
+    fun openPrice(list: List<Label>) {
+        _openPrice.value = Event(list)
     }
 
     fun openHistory() {

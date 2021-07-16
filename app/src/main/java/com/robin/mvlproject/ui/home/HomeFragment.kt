@@ -61,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
                 currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
                 viewModel.init(currentLatitude, currentLongitude)
+                viewModel.onCameraMoved(currentLatitude, currentLongitude)
                 val mapFragment =
                     childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
                 mapFragment?.getMapAsync(this@HomeFragment)
@@ -110,8 +111,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 }
             })
             actionBookClicked.observe(this@HomeFragment, { event ->
-                event.getContentIfNotHandled()?.let { model ->
-                    sharedViewModel.openPrice(model)
+                event.getContentIfNotHandled()?.let { list ->
+                    sharedViewModel.openPrice(list)
                 }
             })
         }
