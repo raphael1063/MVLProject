@@ -2,8 +2,11 @@ package com.robin.mvlproject.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.entities.Label
+import com.robin.mvlproject.data.entities.LabelType
 import com.robin.mvlproject.data.entities.MarkerButtonState
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,16 +24,27 @@ class HomeViewModel @Inject constructor(
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
 
-    private var currentLocation = ""
-
-    private val _locationA = MutableLiveData<String>()
-    val locationA: LiveData<String> = _locationA
-
-    private val _locationB = MutableLiveData<String>()
-    val locationB: LiveData<String> = _locationB
-
     private val _markerState = MutableLiveData(NOTHING_SELECTED)
     val markerState: LiveData<MarkerButtonState> = _markerState
+
+    private val _labelA = MutableLiveData<Label>()
+    val labelA: LiveData<Label> = _labelA
+
+    private val _labelB = MutableLiveData<Label>()
+    val labelB: LiveData<Label> = _labelB
+
+    private val _actionLabelAClicked = MutableLiveData<Event<Label>>()
+    val actionLabelAClicked: LiveData<Event<Label>> = _actionLabelAClicked
+
+    private val _actionLabelBClicked = MutableLiveData<Event<Label>>()
+    val actionLabelBClicked: LiveData<Event<Label>> = _actionLabelBClicked
+
+    private val _actionBookClicked = MutableLiveData<Event<List<Label>>>()
+    val actionBookClicked: LiveData<Event<List<Label>>> = _actionBookClicked
+
+    private lateinit var currentLocation: String
+    private var currentAQI = 0
+
 
     fun init(lat: Double, lng: Double) {
         getAQI(lat, lng)
@@ -51,6 +65,7 @@ class HomeViewModel @Inject constructor(
                 if (result.status == "ok") {
                     Timber.d("AQI RESULT!! = ${result.data.aqi}")
                     _aqi.value = result.data.aqi
+                    currentAQI = result.data.aqi
                 } else {
                     Timber.d("AQI RESULT!! = FAILED!")
                 }
@@ -67,30 +82,45 @@ class HomeViewModel @Inject constructor(
             .map { result ->
                 //administrative 리스트를 내림차순으로 정렬
                 val list = result.localityInfo.administrative.sortedWith(compareBy { -it.order })
-                val address = "${list[1].name} ${list[0].name}"
-                address
+                val locationInfo = "${list[1].name} ${list[0].name}"
+                locationInfo
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ address ->
-                Timber.d("Location RESULT!! = $address")
-                currentLocation = address
+            .subscribe({ locationInfo ->
+                Timber.d("Location RESULT!! = $locationInfo")
+                currentLocation = locationInfo
             }, {
                 Timber.d("Location FAILED!! = ${it.printStackTrace()}")
             }).addTo(compositeDisposable)
     }
 
+    //레이블 A 클릭
+    fun onLabelAClicked() {
+        _labelA.value?.let {
+            _actionLabelAClicked.value = Event(it)
+        }
+
+    }
+
+    //레이블 B 클릭
+    fun onLabelBClicked() {
+        _labelB.value?.let {
+            _actionLabelBClicked.value = Event(it)
+        }
+    }
 
     fun onMarkerButtonClicked() {
-        when(_markerState.value) {
+        when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
-                _locationA.value = currentLocation
+                _labelA.value = Label(LabelType.A, currentLocation, currentAQI, null)
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-                _locationB.value = currentLocation
+                _labelB.value = Label(LabelType.B, currentLocation, currentAQI, null)
             }
             B_SELECTED -> {
+                _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
             }
         }
     }

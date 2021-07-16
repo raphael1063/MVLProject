@@ -13,6 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent">
 
         <fragment
@@ -57,21 +58,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
+                    onSafeClick="@{() -> vm.onLabelAClicked()}"
                     android:paddingVertical="8dp"
                     android:text="A"
                     android:textColor="@color/purple_500"
                     android:textSize="32dp"
-                    app:layout_constraintEnd_toStartOf="@id/tv_home_label_a_address"
+                    app:layout_constraintEnd_toStartOf="@id/tv_home_label_a_location_info"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_home_label_a_address"
+                    android:id="@+id/tv_home_label_a_location_info"
                     android:layout_width="0dp"
+                    onSafeClick="@{() -> vm.onLabelAClicked()}"
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="4dp"
-                    android:text="@{vm.locationA}"
+                    android:text="@{vm.labelA.nickname == null ? vm.labelA.locationInfo : vm.labelA.nickname}"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toTopOf="@id/divider_1"
@@ -95,22 +98,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
                     android:paddingHorizontal="8dp"
+                    onSafeClick="@{() -> vm.onLabelBClicked()}"
                     android:paddingVertical="8dp"
                     android:text="B"
                     android:textColor="@color/teal_200"
                     android:textSize="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_home_label_b_address"
+                    app:layout_constraintEnd_toStartOf="@id/tv_home_label_b_location_info"
                     app:layout_constraintStart_toStartOf="@id/tv_home_label_a_title"
                     app:layout_constraintTop_toBottomOf="@id/divider_1" />
 
                 <TextView
-                    android:id="@+id/tv_home_label_b_address"
+                    android:id="@+id/tv_home_label_b_location_info"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="4dp"
-                    android:text="@{vm.locationB}"
+                    onSafeClick="@{() -> vm.onLabelBClicked()}"
+                    android:text="@{vm.labelB.nickname == null ? vm.labelB.locationInfo : vm.labelB.nickname}"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -125,7 +130,7 @@
                     android:layout_height="0dp"
                     android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_home_label_a_address"
+                    app:layout_constraintStart_toEndOf="@id/tv_home_label_a_location_info"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

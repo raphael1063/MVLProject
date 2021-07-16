@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,8 +16,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
+import com.robin.mvlproject.data.entities.Step
+import com.robin.mvlproject.data.entities.Step.*
 import com.robin.mvlproject.databinding.FragmentHomeBinding
 import com.robin.mvlproject.ext.getCurrentLocation
+import com.robin.mvlproject.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -26,6 +30,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 ), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
 
     private val viewModel: HomeViewModel by viewModels()
+
+    private val sharedViewModel: MainViewModel by activityViewModels()
 
     private var map: GoogleMap? = null
 
@@ -69,26 +75,46 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun observe() {
-        viewModel.markerState.observe(this, { state ->
-            when (state) {
-                A_SELECTED -> {
-                    map?.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(currentLatitude, currentLongitude))
-                            .title("A")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                    )
+        with(viewModel) {
+            markerState.observe(this@HomeFragment, { state ->
+                when (state) {
+                    A_SELECTED -> {
+                        map?.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(currentLatitude, currentLongitude))
+                                .title("A")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                        )
+                    }
+                    B_SELECTED -> {
+                        map?.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(currentLatitude, currentLongitude))
+                                .title("B")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                        )
+                    }
+                    else -> {
+                        //do nothing
+                    }
                 }
-                B_SELECTED -> {
-                    map?.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(currentLatitude, currentLongitude))
-                            .title("B")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                    )
+            })
+            actionLabelAClicked.observe(this@HomeFragment, { event ->
+                event.getContentIfNotHandled()?.let { label ->
+                    sharedViewModel.openDetail(label)
                 }
-            }
-        })
+            })
+            actionLabelBClicked.observe(this@HomeFragment, { event ->
+                event.getContentIfNotHandled()?.let { label ->
+                    sharedViewModel.openDetail(label)
+                }
+            })
+            actionBookClicked.observe(this@HomeFragment, { event ->
+                event.getContentIfNotHandled()?.let { labelList ->
+                    sharedViewModel.openPrice(labelList)
+                }
+            })
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
