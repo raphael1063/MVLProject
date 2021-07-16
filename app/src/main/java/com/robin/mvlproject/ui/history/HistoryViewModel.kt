@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val repository: Repository
 ) : BaseViewModel() {
 }
