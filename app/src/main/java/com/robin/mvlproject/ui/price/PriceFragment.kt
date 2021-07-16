@@ -1,9 +1,11 @@
 package com.robin.mvlproject.ui.price
 
 import android.os.Bundle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
+import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,10 +19,8 @@ class PriceFragment : BaseFragment<FragmentPriceBinding>(
 
     override fun start() {
         binding.vm = viewModel
-        val labelA = requireArguments().getParcelable<Label>("labelA")
-        val labelB = requireArguments().getParcelable<Label>("labelB")
-        if (labelA != null && labelB != null) {
-            viewModel.loadData(labelA, labelB)
+        requireArguments().getParcelable<BooksRequest>("booksRequest")?.let {
+            viewModel.loadData(it)
         }
     }
 
@@ -28,10 +28,9 @@ class PriceFragment : BaseFragment<FragmentPriceBinding>(
     }
 
     companion object {
-       fun getInstance(labelA: Label, labelB: Label) = PriceFragment().apply {
+       fun getInstance(booksRequest: BooksRequest) = PriceFragment().apply {
            arguments = Bundle().apply {
-               putParcelable("labelA", labelA)
-               putParcelable("labelB", labelB)
+               putParcelable("booksRequest", booksRequest)
            }
        }
     }

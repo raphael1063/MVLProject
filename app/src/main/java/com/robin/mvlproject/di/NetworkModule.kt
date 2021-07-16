@@ -1,10 +1,8 @@
 package com.robin.mvlproject.di
 
+import androidx.room.PrimaryKey
 import com.robin.mvlproject.BuildConfig
-import com.robin.mvlproject.data.api.ApiHelper
-import com.robin.mvlproject.data.api.ApiHelperImpl
-import com.robin.mvlproject.data.api.AQIApiService
-import com.robin.mvlproject.data.api.LocationApiService
+import com.robin.mvlproject.data.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -91,5 +89,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAQIApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+    fun provideBooksApiService(): BooksApiService = BooksApiServiceImpl()
+
+    @Provides
+    @Singleton
+    fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
 }

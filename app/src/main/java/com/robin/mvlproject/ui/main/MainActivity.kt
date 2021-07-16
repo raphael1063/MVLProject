@@ -36,9 +36,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
                 }
             })
             openPrice.observe(this@MainActivity, { event ->
-                event.getContentIfNotHandled()?.let { label ->
+                event.getContentIfNotHandled()?.let { model ->
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, PriceFragment.getInstance(label[0], label[1]))
+                        .add(R.id.fcv_container, PriceFragment.getInstance(model))
                         .addToBackStack(null)
                         .commit()
                 }

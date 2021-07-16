@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType
 import com.robin.mvlproject.data.entities.LabelType.*
@@ -40,12 +41,13 @@ class HomeViewModel @Inject constructor(
     private val _actionLabelBClicked = MutableLiveData<Event<Label>>()
     val actionLabelBClicked: LiveData<Event<Label>> = _actionLabelBClicked
 
-    private val _actionBookClicked = MutableLiveData<Event<List<Label>>>()
-    val actionBookClicked: LiveData<Event<List<Label>>> = _actionBookClicked
+    private val _actionBookClicked = MutableLiveData<Event<BooksRequest>>()
+    val actionBookClicked: LiveData<Event<BooksRequest>> = _actionBookClicked
 
+    private var currentLatitude = 0.0
+    private var currentLongitude = 0.0
     private lateinit var currentLocation: String
     private var currentAQI = 0
-
 
     fun init(lat: Double, lng: Double) {
         getAQI(lat, lng)
@@ -55,6 +57,8 @@ class HomeViewModel @Inject constructor(
     fun onCameraMoved(lat: Double, lng: Double) {
         getAQI(lat, lng)
         getLocation(lat, lng, "en")
+        currentLatitude = lat
+        currentLongitude = lng
     }
 
     //해당위치의 대기질지수를 받아오는 API Call
@@ -114,20 +118,35 @@ class HomeViewModel @Inject constructor(
         when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
-                _labelA.value = Label(A, currentLocation, currentAQI, null)
+                _labelA.value = Label(A, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-                _labelB.value = Label(B, currentLocation, currentAQI, null)
+                _labelB.value = Label(B, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
             }
             B_SELECTED -> {
-                _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
+                _actionBookClicked.value = Event(
+                    BooksRequest(
+                        Label(
+                            _labelA.value?.aqi,
+                            _labelA.value?.latitude,
+                            _labelA.value?.longitude,
+                            _labelA.value?.nickname
+                        ),
+                        Label(
+                            _labelB.value?.aqi,
+                            _labelB.value?.latitude,
+                            _labelB.value?.longitude,
+                            _labelB.value?.nickname
+                        )
+                    )
+                )
             }
         }
     }
 
     fun updateLabel(label: Label) {
-        if(label.name == A) {
+        if (label.name == A) {
             _labelA.value = label
         } else {
             _labelB.value = label

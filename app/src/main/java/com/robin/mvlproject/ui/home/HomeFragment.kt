@@ -110,8 +110,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 }
             })
             actionBookClicked.observe(this@HomeFragment, { event ->
-                event.getContentIfNotHandled()?.let { labelList ->
-                    sharedViewModel.openPrice(labelList)
+                event.getContentIfNotHandled()?.let { model ->
+                    sharedViewModel.openPrice(model)
                 }
             })
         }

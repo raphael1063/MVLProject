@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.Step
 import com.robin.mvlproject.data.entities.Step.*
@@ -20,8 +21,8 @@ class MainViewModel @Inject constructor(
     private val _openDetail = MutableLiveData<Event<Label>>()
     val openDetail: LiveData<Event<Label>> = _openDetail
 
-    private val _openPrice = MutableLiveData<Event<List<Label>>>()
-    val openPrice: LiveData<Event<List<Label>>> = _openPrice
+    private val _openPrice = MutableLiveData<Event<BooksRequest>>()
+    val openPrice: LiveData<Event<BooksRequest>> = _openPrice
 
     private val _openHistory = MutableLiveData<Event<Unit>>()
     val openHistory: LiveData<Event<Unit>> = _openHistory
@@ -33,8 +34,8 @@ class MainViewModel @Inject constructor(
         _openDetail.value = Event(label)
     }
 
-    fun openPrice(labelList: List<Label>) {
-        _openPrice.value = Event(labelList)
+    fun openPrice(model: BooksRequest) {
+        _openPrice.value = Event(model)
     }
 
     fun openHistory() {
