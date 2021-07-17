@@ -47,7 +47,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (isGranted) {
-
+                    currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
+                    currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
+                    viewModel.init(currentLatitude, currentLongitude)
+                    viewModel.onCameraMoved(currentLatitude, currentLongitude)
+                    val mapFragment =
+                        childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
+                    mapFragment?.getMapAsync(this@HomeFragment)
                 } else {
                     requireActivity().finish()
                 }
