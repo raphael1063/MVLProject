@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
-import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Label
-import com.robin.mvlproject.data.entities.LabelType
 import com.robin.mvlproject.data.entities.LabelType.*
 import com.robin.mvlproject.data.entities.MarkerButtonState
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
@@ -135,7 +133,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun updateLabel(label: Label) {
-        if (label.name == A) {
+        if (label.type == A) {
             _labelA.value = label
         } else {
             _labelB.value = label

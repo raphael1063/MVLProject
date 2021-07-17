@@ -6,12 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Label(
-    var name: LabelType,
+    var type: LabelType,
     var locationInfo: String,
     var latitude: Double,
     var longitude: Double,
     var aqi: Int,
-    var nickname: String?
+    var name: String?
 ) : Parcelable {
     constructor(name: LabelType, locationInfo: String, aqi: Int, nickname: String?) : this(name, locationInfo, 0.0, 0.0, aqi, nickname)
     constructor(aqi: Int, lat: Double, lng: Double, name: String?) : this(UNDEFINED, "", lat, lng, aqi, name)

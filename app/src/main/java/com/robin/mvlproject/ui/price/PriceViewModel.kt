@@ -3,6 +3,7 @@ package com.robin.mvlproject.ui.price
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.BooksRequest
@@ -29,6 +30,9 @@ class PriceViewModel @Inject constructor(
 
     private val _books = MutableLiveData<BooksResult>()
     val books: LiveData<BooksResult> = _books
+
+    private val _actionHistoryButtonClicked = MutableLiveData<Event<Unit>>()
+    val actionHistoryButtonClicked: LiveData<Event<Unit>> = _actionHistoryButtonClicked
 
     fun loadData(labelA: Label, labelB: Label) {
         getBooks(BooksRequest(labelA, labelB))
@@ -72,6 +76,6 @@ class PriceViewModel @Inject constructor(
     }
 
     fun onHistoryButtonClicked() {
-
+        _actionHistoryButtonClicked.value = Event(Unit)
     }
 }

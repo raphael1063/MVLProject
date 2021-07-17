@@ -18,4 +18,7 @@ class ApiHelperImpl @Inject constructor(
 
     override fun getBooks(booksRequest: BooksRequest): Single<BooksResult> =
         apiService.getBooks(booksRequest)
+
+    override fun getHistory(year: String, month: String): Single<List<BooksResult>> =
+        apiService.getHistory(year, month)
 }

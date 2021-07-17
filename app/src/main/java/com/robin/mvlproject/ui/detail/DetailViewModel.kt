@@ -2,7 +2,6 @@ package com.robin.mvlproject.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Label
@@ -25,7 +24,7 @@ class DetailViewModel @Inject constructor(
     fun loadData(label: Label) {
         _label.value = label
         _label.value?.let {
-            nickname.value = it.nickname ?: ""
+            nickname.value = it.name ?: ""
         }
 
     }
@@ -33,7 +32,7 @@ class DetailViewModel @Inject constructor(
     fun onSaveButtonClicked() {
         _label.value?.let {
             _updateLabel.value = it.apply {
-                nickname = if(this@DetailViewModel.nickname.value.isNullOrEmpty()) {
+                name = if(this@DetailViewModel.nickname.value.isNullOrEmpty()) {
                     null
                 } else {
                     this@DetailViewModel.nickname.value

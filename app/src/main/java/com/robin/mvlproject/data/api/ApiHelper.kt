@@ -13,4 +13,6 @@ interface ApiHelper {
     fun getLocation(lat:Double, lng: Double, lang: String): Single<LocationResult>
 
     fun getBooks(booksRequest: BooksRequest): Single<BooksResult>
+
+    fun getHistory(year: String, month: String): Single<List<BooksResult>>
 }

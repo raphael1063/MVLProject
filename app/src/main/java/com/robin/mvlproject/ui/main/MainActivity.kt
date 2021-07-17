@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
             openHistory.observe(this@MainActivity, { event ->
                 event.getContentIfNotHandled()?.let {
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, HistoryFragment.instance)
+                        .add(R.id.fcv_container, HistoryFragment.getInstance())
                         .addToBackStack(null)
                         .commit()
                 }

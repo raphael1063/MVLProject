@@ -18,4 +18,7 @@ class Repository @Inject constructor(private val apiHelper: ApiHelper) {
 
     fun getBooks(booksRequest: BooksRequest): Single<BooksResult> =
         apiHelper.getBooks(booksRequest)
+
+    fun getHistory(year: String, month: String): Single<List<BooksResult>> =
+        apiHelper.getHistory(year, month)
 }
