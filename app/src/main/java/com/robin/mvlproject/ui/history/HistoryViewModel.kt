@@ -2,20 +2,18 @@ package com.robin.mvlproject.ui.history
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.BooksResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryImpl
 ) : BaseViewModel() {
 
     private val _historyList = MutableLiveData<List<BooksResult>>()

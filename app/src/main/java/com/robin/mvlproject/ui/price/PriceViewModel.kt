@@ -2,10 +2,9 @@ package com.robin.mvlproject.ui.price
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.BooksResult
 import com.robin.mvlproject.data.entities.Label
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PriceViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryImpl
 ) : BaseViewModel() {
 
     private val _locationA = MutableLiveData<String>()

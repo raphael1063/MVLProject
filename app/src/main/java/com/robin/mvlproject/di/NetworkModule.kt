@@ -88,9 +88,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBooksApiService(): ApiService = ApiServiceImpl()
-
-    @Provides
-    @Singleton
-    fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+    fun provideBooksApiService(): ApiService =
+        ApiServiceImpl()
 }

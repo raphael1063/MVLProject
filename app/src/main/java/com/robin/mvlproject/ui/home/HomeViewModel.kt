@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.Repository
+import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType.*
 import com.robin.mvlproject.data.entities.MarkerButtonState
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryImpl
 ) : BaseViewModel() {
 
     private val _aqi = MutableLiveData<Int>()
@@ -51,20 +51,21 @@ class HomeViewModel @Inject constructor(
     private var currentAQI = 0
 
     fun init(lat: Double, lng: Double) {
-        getAQI(lat, lng)
-        getLocation(lat, lng, "en")
-        currentLatitude = lat
-        currentLongitude = lng
+        getCurrentLocationInfo(lat, lng)
     }
 
     fun onCameraMoved(lat: Double, lng: Double) {
+        getCurrentLocationInfo(lat, lng)
+        if (_markerState.value != B_SELECTED) {
+            _centerMarkerVisible.value = true
+        }
+    }
+
+    private fun getCurrentLocationInfo(lat: Double, lng: Double) {
         getAQI(lat, lng)
         getLocation(lat, lng, "en")
         currentLatitude = lat
         currentLongitude = lng
-        if (_markerState.value != B_SELECTED) {
-            _centerMarkerVisible.value = true
-        }
     }
 
     //해당위치의 대기질지수를 받아오는 API Call

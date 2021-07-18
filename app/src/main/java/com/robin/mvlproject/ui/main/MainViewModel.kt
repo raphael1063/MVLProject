@@ -2,20 +2,16 @@ package com.robin.mvlproject.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.Repository
-import com.robin.mvlproject.data.entities.BooksRequest
+import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Label
-import com.robin.mvlproject.data.entities.Step
-import com.robin.mvlproject.data.entities.Step.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: RepositoryImpl
 ) : BaseViewModel() {
 
     private val _openDetail = MutableLiveData<Event<Label>>()
