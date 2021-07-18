@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
-import com.robin.mvlproject.data.entities.BooksResult
+import com.robin.mvlproject.data.entities.Book
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -16,8 +16,8 @@ class HistoryViewModel @Inject constructor(
     private val repository: RepositoryImpl
 ) : BaseViewModel() {
 
-    private val _historyList = MutableLiveData<List<BooksResult>>()
-    val historyList: LiveData<List<BooksResult>> = _historyList
+    private val _historyList = MutableLiveData<List<Book>>()
+    val historyList: LiveData<List<Book>> = _historyList
 
     private val _totalCount = MutableLiveData<Int>()
     val totalCount: LiveData<Int> = _totalCount

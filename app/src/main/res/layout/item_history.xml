@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.robin.mvlproject.data.entities.BooksResult" />
+            type="com.robin.mvlproject.data.entities.Book" />
         <variable
             name="vm"
             type="com.robin.mvlproject.ui.history.HistoryViewModel" />

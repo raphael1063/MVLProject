@@ -6,7 +6,7 @@ import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.BooksRequest
-import com.robin.mvlproject.data.entities.BooksResult
+import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,8 +27,8 @@ class PriceViewModel @Inject constructor(
     private val _locationB = MutableLiveData<String>()
     val locationB: LiveData<String> = _locationB
 
-    private val _books = MutableLiveData<BooksResult>()
-    val books: LiveData<BooksResult> = _books
+    private val _books = MutableLiveData<Book>()
+    val books: LiveData<Book> = _books
 
     private val _actionHistoryButtonClicked = MutableLiveData<Event<Unit>>()
     val actionHistoryButtonClicked: LiveData<Event<Unit>> = _actionHistoryButtonClicked

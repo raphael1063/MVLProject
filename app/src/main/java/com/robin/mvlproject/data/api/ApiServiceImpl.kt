@@ -1,15 +1,15 @@
 package com.robin.mvlproject.data.api
 
 import com.robin.mvlproject.data.entities.BooksRequest
-import com.robin.mvlproject.data.entities.BooksResult
+import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
 import io.reactivex.Single
 
 class ApiServiceImpl : ApiService {
-    override fun getBooks(requestBody: BooksRequest): Single<BooksResult> {
+    override fun getBooks(requestBody: BooksRequest): Single<Book> {
         return Single.create { data ->
             data.onSuccess(
-                BooksResult(
+                Book(
                     0,
                     Label(
                         requestBody.a.aqi,
@@ -28,11 +28,11 @@ class ApiServiceImpl : ApiService {
         }
     }
 
-    override fun getHistory(year: String, month: String): Single<List<BooksResult>> {
+    override fun getHistory(year: String, month: String): Single<List<Book>> {
         return Single.create { data ->
             data.onSuccess(
                 listOf(
-                    BooksResult(
+                    Book(
                         0,
                         Label(
                             40,
@@ -48,7 +48,7 @@ class ApiServiceImpl : ApiService {
                         ),
                         10000
                     ),
-                    BooksResult(
+                    Book(
                         1,
                         Label(
                             40,
@@ -64,7 +64,7 @@ class ApiServiceImpl : ApiService {
                         ),
                         10000
                     ),
-                    BooksResult(
+                    Book(
                         2,
                         Label(
                             40,
@@ -80,7 +80,7 @@ class ApiServiceImpl : ApiService {
                         ),
                         10000
                     ),
-                    BooksResult(
+                    Book(
                         3,
                         Label(
                             40,

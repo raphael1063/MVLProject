@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.robin.mvlproject.R
-import com.robin.mvlproject.data.entities.BooksResult
+import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.databinding.ItemHistoryBinding
 
 class HistoryAdapter(private val viewModel: HistoryViewModel) :
-    ListAdapter<BooksResult, HistoryAdapter.ViewHolder>(BOOK_COMPARATOR){
+    ListAdapter<Book, HistoryAdapter.ViewHolder>(BOOK_COMPARATOR){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_history, parent, false))
@@ -22,7 +22,7 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
     }
 
     class ViewHolder(private val binding: ItemHistoryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: BooksResult, viewModel: HistoryViewModel) {
+        fun bind(model: Book, viewModel: HistoryViewModel) {
             with(binding) {
                 this.model = model
                 vm = viewModel
@@ -31,12 +31,12 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
     }
 
     companion object {
-        private val BOOK_COMPARATOR = object : DiffUtil.ItemCallback<BooksResult>() {
-            override fun areItemsTheSame(oldItem: BooksResult, newItem: BooksResult): Boolean {
+        private val BOOK_COMPARATOR = object : DiffUtil.ItemCallback<Book>() {
+            override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
                 return oldItem.idx == newItem.idx
             }
 
-            override fun areContentsTheSame(oldItem: BooksResult, newItem: BooksResult): Boolean {
+            override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
                 return oldItem == newItem
             }
 
