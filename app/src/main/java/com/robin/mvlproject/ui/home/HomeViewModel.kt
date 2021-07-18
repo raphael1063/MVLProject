@@ -21,8 +21,10 @@ class HomeViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel() {
 
+    //대기질 지수
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
+
 
     private val _markerState = MutableLiveData(NOTHING_SELECTED)
     val markerState: LiveData<MarkerButtonState> = _markerState
