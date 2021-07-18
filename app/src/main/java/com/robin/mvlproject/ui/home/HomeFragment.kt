@@ -27,7 +27,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
-), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
+), OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -47,13 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (isGranted) {
-                    currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
-                    currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
-                    viewModel.init(currentLatitude, currentLongitude)
-                    viewModel.onCameraMoved(currentLatitude, currentLongitude)
-                    val mapFragment =
-                        childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
-                    mapFragment?.getMapAsync(this@HomeFragment)
+                    setCurrentLocation()
                 } else {
                     requireActivity().finish()
                 }
@@ -64,18 +58,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
-                currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
-                currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
-                viewModel.init(currentLatitude, currentLongitude)
-                viewModel.onCameraMoved(currentLatitude, currentLongitude)
-                val mapFragment =
-                    childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
-                mapFragment?.getMapAsync(this@HomeFragment)
+                //현재 위치로 설정
+                setCurrentLocation()
             }
             else -> {
-                requestPermissionLauncher.launch(
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
+                //권한 요청
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
 
@@ -131,20 +119,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-        val currentLocation = LatLng(currentLatitude, currentLongitude)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16F))
-        map.setOnCameraMoveListener(this)
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(currentLatitude, currentLongitude),
+                15F
+            )
+        )
+        map.setOnCameraIdleListener(this)
     }
 
-    override fun onCameraMove() {
+    override fun onCameraIdle() {
         Timber.d("CameraPosition = ${map?.cameraPosition}")
         currentLatitude = map?.cameraPosition?.target?.latitude ?: 0.0
         currentLongitude = map?.cameraPosition?.target?.longitude ?: 0.0
         viewModel.onCameraMoved(currentLatitude, currentLongitude)
     }
 
+    private fun setCurrentLocation() {
+        currentLatitude = requireActivity().getCurrentLocation()?.latitude ?: 0.0
+        currentLongitude = requireActivity().getCurrentLocation()?.longitude ?: 0.0
+        viewModel.init(currentLatitude, currentLongitude)
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
+        mapFragment?.getMapAsync(this@HomeFragment)
+    }
+
     companion object {
         val instance = HomeFragment()
     }
-
 }

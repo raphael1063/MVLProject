@@ -33,6 +33,9 @@ class HomeViewModel @Inject constructor(
     private val _labelB = MutableLiveData<Label>()
     val labelB: LiveData<Label> = _labelB
 
+    private val _centerMarkerVisible = MutableLiveData<Boolean>()
+    val centerMarkerVisible: LiveData<Boolean> = _centerMarkerVisible
+
     private val _actionLabelAClicked = MutableLiveData<Event<Label>>()
     val actionLabelAClicked: LiveData<Event<Label>> = _actionLabelAClicked
 
@@ -50,6 +53,8 @@ class HomeViewModel @Inject constructor(
     fun init(lat: Double, lng: Double) {
         getAQI(lat, lng)
         getLocation(lat, lng, "en")
+        currentLatitude = lat
+        currentLongitude = lng
     }
 
     fun onCameraMoved(lat: Double, lng: Double) {
@@ -57,6 +62,9 @@ class HomeViewModel @Inject constructor(
         getLocation(lat, lng, "en")
         currentLatitude = lat
         currentLongitude = lng
+        if (_markerState.value != B_SELECTED) {
+            _centerMarkerVisible.value = true
+        }
     }
 
     //해당위치의 대기질지수를 받아오는 API Call
@@ -102,7 +110,6 @@ class HomeViewModel @Inject constructor(
         _labelA.value?.let {
             _actionLabelAClicked.value = Event(it)
         }
-
     }
 
     //레이블 B 클릭
@@ -113,6 +120,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onMarkerButtonClicked() {
+        _centerMarkerVisible.value = false
         when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
