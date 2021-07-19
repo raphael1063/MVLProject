@@ -1,20 +1,24 @@
 package com.robin.mvlproject.ui.home
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
+import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType.*
 import com.robin.mvlproject.data.entities.MarkerButtonState
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
+import com.robin.mvlproject.ext.getFloor3
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.floor
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -25,7 +29,6 @@ class HomeViewModel @Inject constructor(
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
 
-
     private val _markerState = MutableLiveData(NOTHING_SELECTED)
     val markerState: LiveData<MarkerButtonState> = _markerState
 
@@ -35,7 +38,13 @@ class HomeViewModel @Inject constructor(
     private val _labelB = MutableLiveData<Label>()
     val labelB: LiveData<Label> = _labelB
 
-    private val _centerMarkerVisible = MutableLiveData<Boolean>()
+    private val _moveCamera = MutableLiveData<List<Double>>()
+    val moveCamera: LiveData<List<Double>> = _moveCamera
+
+    private val _clearMap = MutableLiveData<Event<Unit>>()
+    val clearMap: LiveData<Event<Unit>> = _clearMap
+
+    private val _centerMarkerVisible = MutableLiveData(true)
     val centerMarkerVisible: LiveData<Boolean> = _centerMarkerVisible
 
     private val _actionLabelAClicked = MutableLiveData<Event<Label>>()
@@ -53,14 +62,19 @@ class HomeViewModel @Inject constructor(
     private var currentAQI = 0
 
     fun init(lat: Double, lng: Double) {
-        getCurrentLocationInfo(lat, lng)
+        getLabelByLatLng(lat, lng)
+        currentLatitude = lat
+        currentLongitude = lng
     }
 
-    fun onCameraMoved(lat: Double, lng: Double) {
-        getCurrentLocationInfo(lat, lng)
+    fun onCameraMove() {
         if (_markerState.value != B_SELECTED) {
             _centerMarkerVisible.value = true
         }
+    }
+
+    fun onCameraIdle(lat: Double, lng: Double) {
+        getLabelByLatLng(lat, lng)
     }
 
     private fun getCurrentLocationInfo(lat: Double, lng: Double) {
@@ -108,6 +122,32 @@ class HomeViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
+    private fun insertLabel(label: Label) {
+        label.latitude = label.latitude.getFloor3()
+        label.longitude = label.longitude.getFloor3()
+        repository.insertLabel(label)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Timber.d("Label 저장 완료")
+            }, {
+                Timber.d("Label 저장 실패: ${it.message}")
+            }).addTo(compositeDisposable)
+    }
+
+    private fun getLabelByLatLng(lat: Double, lng: Double) {
+        repository.getLabelByLanLng(lat.getFloor3(), lng.getFloor3()).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                currentLocation = it.locationInfo
+                currentLatitude = it.latitude
+                currentLongitude = it.longitude
+                getAQI(lat, lng)
+            }, {
+                getCurrentLocationInfo(lat, lng)
+            }).addTo(compositeDisposable)
+    }
+
     //레이블 A 클릭
     fun onLabelAClicked() {
         _labelA.value?.let {
@@ -127,13 +167,35 @@ class HomeViewModel @Inject constructor(
         when (_markerState.value) {
             NOTHING_SELECTED -> {
                 _markerState.value = A_SELECTED
-                _labelA.value =
-                    Label(A, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
+                Label(
+                    0,
+                    A,
+                    currentLocation,
+                    currentLatitude,
+                    currentLongitude,
+                    currentAQI,
+                    null
+                ).also {
+                    _labelA.value = it
+                    insertLabel(it)
+                }
+
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-                _labelB.value =
-                    Label(B, currentLocation, currentLatitude, currentLongitude, currentAQI, null)
+
+                    Label(
+                        0,
+                        B,
+                        currentLocation,
+                        currentLatitude,
+                        currentLongitude,
+                        currentAQI,
+                        null
+                    ).also {
+                        _labelB.value = it
+                        insertLabel(it)
+                    }
             }
             B_SELECTED -> {
                 if (_labelA.value != null && _labelB.value != null) {
@@ -149,5 +211,22 @@ class HomeViewModel @Inject constructor(
         } else {
             _labelB.value = label
         }
+    }
+
+    fun moveToPosition(book: Book) {
+        _clearMap.value = Event(Unit)
+        _labelA.value = book.a
+        _labelB.value = book.b
+        val centerLat = (book.a.latitude + book.b.latitude) / 2
+        val centerLng = (book.a.longitude + book.b.longitude) / 2
+        moveCamera(centerLat, centerLng)
+    }
+
+    fun moveCamera(lat: Double, lng: Double) {
+        _moveCamera.value = listOf(lat, lng)
+    }
+
+    fun moveCamera() {
+        _moveCamera.value = listOf(currentLatitude, currentLongitude)
     }
 }
