@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.robin.mvlproject.data.entities.Label" />
+
+        <variable
+            name="vm"
+            type="com.robin.mvlproject.ui.labellog.LabelLogViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_button"
+        android:layout_margin="4dp"
+        android:paddingVertical="8dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_label_log_location_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Location : "
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_label_log_nickname_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_label_log_location_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="8dp"
+            android:text="@{model.name}"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_label_log_location_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_label_log_location_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_label_log_location_title"
+            tools:text="경기도 성남" />
+
+        <TextView
+            android:id="@+id/tv_label_log_nickname_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:text="Nickname : "
+            app:layout_constraintTop_toBottomOf="@id/tv_label_log_location_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_label_log_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="8dp"
+            android:text="@{model.name}"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_label_log_nickname_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_label_log_nickname_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_label_log_nickname_title"
+            tools:text="집" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
