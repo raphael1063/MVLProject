@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
+import kotlin.math.floor
 
 @SuppressLint("MissingPermission")
 fun Activity.getCurrentLocation() : Location? {
@@ -20,3 +21,5 @@ fun Activity.getCurrentLocation() : Location? {
     }
     return bestLocation
 }
+
+fun Double.getFloor3() = floor(this*1000) /1000
