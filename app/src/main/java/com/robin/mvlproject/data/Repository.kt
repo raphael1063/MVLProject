@@ -1,9 +1,7 @@
 package com.robin.mvlproject.data
 
-import com.robin.mvlproject.data.entities.AQIResult
-import com.robin.mvlproject.data.entities.BooksRequest
-import com.robin.mvlproject.data.entities.Book
-import com.robin.mvlproject.data.entities.LocationResult
+import com.robin.mvlproject.data.entities.*
+import io.reactivex.Completable
 import io.reactivex.Single
 
 interface Repository {
@@ -15,4 +13,20 @@ interface Repository {
     fun getBooks(booksRequest: BooksRequest): Single<Book>
 
     fun getHistory(year: String, month: String): Single<List<Book>>
+
+    fun insertLabel(label: Label): Completable
+
+    fun getAllLabels(): Single<List<Label>>
+
+    fun getLabel(key: Long) : Single<Label>
+
+    fun getLabelByLanLng(lat: Double, lng: Double): Single<Label>
+
+    fun updateLabel(label: Label): Completable
+
+    fun insertBook(book: Book) : Completable
+
+    fun getAllBooks(): Single<List<Book>>
+
+    fun getBook(key: Long): Single<Book>
 }
