@@ -13,10 +13,5 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton
-    @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
 
-    @Provides
-    fun provideLabelDao(appDatabase: AppDatabase) = appDatabase.labelDao
 }
