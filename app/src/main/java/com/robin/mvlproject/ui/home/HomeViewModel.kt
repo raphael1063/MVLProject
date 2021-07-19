@@ -88,7 +88,6 @@ class HomeViewModel @Inject constructor(
     //해당위치의 대기질지수를 받아오는 API Call
     private fun getAQI(lat: Double, lng: Double) {
         repository.getAQI(lat, lng)
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 if (result.status == "ok") {
@@ -105,7 +104,6 @@ class HomeViewModel @Inject constructor(
     //위치정보를 받는 API Call
     private fun getLocation(lat: Double, lng: Double, lang: String) {
         repository.getLocation(lat, lng, lang)
-            .subscribeOn(Schedulers.io())
             .subscribeOn(Schedulers.computation())
             .map { result ->
                 //administrative 리스트를 내림차순으로 정렬
@@ -125,7 +123,6 @@ class HomeViewModel @Inject constructor(
         label.latitude = label.latitude.getFloor3()
         label.longitude = label.longitude.getFloor3()
         repository.insertLabel(label)
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
             }, {
@@ -134,7 +131,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getLabelByLatLng(lat: Double, lng: Double) {
-        repository.getLabelByLanLng(lat.getFloor3(), lng.getFloor3()).subscribeOn(Schedulers.io())
+        repository.getLabelByLanLng(lat.getFloor3(), lng.getFloor3())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 currentLocation = it.locationInfo

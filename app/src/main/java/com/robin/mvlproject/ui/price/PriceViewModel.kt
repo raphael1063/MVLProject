@@ -39,7 +39,6 @@ class PriceViewModel @Inject constructor(
 
     private fun getBooks(booksRequest: BooksRequest) {
         repository.getBooks(booksRequest)
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _books.value = it
@@ -53,7 +52,6 @@ class PriceViewModel @Inject constructor(
     //위치정보를 받는 API Call
     private fun getLocation(lat: Double, lng: Double, type: LabelType) {
         repository.getLocation(lat, lng, "en")
-            .subscribeOn(Schedulers.io())
             .subscribeOn(Schedulers.computation())
             .map { result ->
                 //administrative 리스트를 내림차순으로 정렬

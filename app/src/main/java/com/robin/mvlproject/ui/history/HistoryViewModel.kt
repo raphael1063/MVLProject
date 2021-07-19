@@ -35,7 +35,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun getHistory(year: String, month: String) {
-        repository.getHistory(year, month).subscribeOn(Schedulers.io())
+        repository.getHistory(year, month)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _historyList.value = it
