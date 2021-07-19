@@ -29,6 +29,7 @@ class HomeViewModel @Inject constructor(
     private val _aqi = MutableLiveData<Int>()
     val aqi: LiveData<Int> = _aqi
 
+    //마커 표시 상태 (NOTHING_SELECTED : A, B 선택되지 않음, A_SELECTED: A 레이블 선택됨, B_SELECTED: B 레이블 선택됨)
     private val _markerState = MutableLiveData(NOTHING_SELECTED)
     val markerState: LiveData<MarkerButtonState> = _markerState
 
@@ -91,7 +92,6 @@ class HomeViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 if (result.status == "ok") {
-                    Timber.d("AQI RESULT!! = ${result.data.aqi}")
                     _aqi.value = result.data.aqi
                     currentAQI = result.data.aqi
                 } else {
@@ -115,7 +115,6 @@ class HomeViewModel @Inject constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ locationInfo ->
-                Timber.d("Location RESULT!! = $locationInfo")
                 currentLocation = locationInfo
             }, {
                 Timber.d("Location FAILED!! = ${it.printStackTrace()}")
@@ -129,7 +128,6 @@ class HomeViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Timber.d("Label 저장 완료")
             }, {
                 Timber.d("Label 저장 실패: ${it.message}")
             }).addTo(compositeDisposable)
@@ -183,46 +181,54 @@ class HomeViewModel @Inject constructor(
             }
             A_SELECTED -> {
                 _markerState.value = B_SELECTED
-
-                    Label(
-                        0,
-                        B,
-                        currentLocation,
-                        currentLatitude,
-                        currentLongitude,
-                        currentAQI,
-                        null
-                    ).also {
-                        _labelB.value = it
-                        insertLabel(it)
-                    }
+                Label(
+                    0,
+                    B,
+                    currentLocation,
+                    currentLatitude,
+                    currentLongitude,
+                    currentAQI,
+                    null
+                ).also {
+                    _labelB.value = it
+                    insertLabel(it)
+                }
             }
             B_SELECTED -> {
                 if (_labelA.value != null && _labelB.value != null) {
                     _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
                 }
+                Timber.d("BOOK CLICKED : labelA = ${_labelA.value} | labelB = ${_labelB.value}")
             }
         }
     }
 
+    //레이블 업데이트 (닉네임 변경)
     fun updateLabel(label: Label) {
+        _clearMap.value = Event(Unit)
         if (label.type == A) {
             _labelA.value = label
+            _labelB.value = _labelB.value
         } else {
+            _labelA.value = _labelA.value
             _labelB.value = label
         }
     }
 
     fun moveToPosition(book: Book) {
         _clearMap.value = Event(Unit)
-        _labelA.value = book.a
-        _labelB.value = book.b
+        updateLabel(book.a.apply {
+            type = A
+        })
+        updateLabel(book.b.apply {
+            type = B
+        })
         val centerLat = (book.a.latitude + book.b.latitude) / 2
         val centerLng = (book.a.longitude + book.b.longitude) / 2
         moveCamera(centerLat, centerLng)
     }
 
-    fun moveCamera(lat: Double, lng: Double) {
+    private fun moveCamera(lat: Double, lng: Double) {
         _moveCamera.value = listOf(lat, lng)
     }
 

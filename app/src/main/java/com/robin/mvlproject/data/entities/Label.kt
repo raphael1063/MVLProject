@@ -31,5 +31,11 @@ data class Label(
     @ColumnInfo(name = "name")
     var name: String?
 ) : Parcelable {
-    constructor(aqi: Int, latitude: Double, longitude: Double, locationInfo: String) : this(0, UNDEFINED,  locationInfo, latitude, longitude, aqi, null)
+    constructor(
+        aqi: Int,
+        latitude: Double,
+        longitude: Double,
+        locationInfo: String,
+        name: String?
+    ) : this(0, UNDEFINED, locationInfo, latitude, longitude, aqi, name)
 }

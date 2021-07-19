@@ -66,11 +66,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun observe() {
         with(viewModel) {
+            //지도에서 마커 제거
             clearMap.observe(this@HomeFragment, { event ->
                 event.getContentIfNotHandled()?.let {
                     map?.clear()
                 }
             })
+            //카메라 이동
             moveCamera.observe(this@HomeFragment, { latLng ->
                 map?.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -95,16 +97,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
                 )
             })
+            //A 레이블 클릭
             actionLabelAClicked.observe(this@HomeFragment, { event ->
                 event.getContentIfNotHandled()?.let { label ->
                     sharedViewModel.openDetail(label)
                 }
             })
+            //B 레이블 클릭
             actionLabelBClicked.observe(this@HomeFragment, { event ->
                 event.getContentIfNotHandled()?.let { label ->
                     sharedViewModel.openDetail(label)
                 }
             })
+            //Book 버튼 클릭
             actionBookClicked.observe(this@HomeFragment, { event ->
                 event.getContentIfNotHandled()?.let { list ->
                     sharedViewModel.openPrice(list)
@@ -112,6 +117,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             })
         }
         with(sharedViewModel) {
+            //레이블 업데이트
             updateLabel.observe(this@HomeFragment, { label ->
                 viewModel.updateLabel(label)
             })
@@ -134,7 +140,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun onCameraIdle() {
-        Timber.d("CameraPosition = ${map?.cameraPosition}")
         viewModel.onCameraIdle(
             map?.cameraPosition?.target?.latitude ?: 0.0,
             map?.cameraPosition?.target?.longitude ?: 0.0

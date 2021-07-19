@@ -15,14 +15,16 @@ class ApiServiceImpl : ApiService {
                         requestBody.a.aqi,
                         requestBody.a.latitude,
                         requestBody.a.longitude,
-                        requestBody.a.locationInfo
+                        requestBody.a.locationInfo,
+                        requestBody.a.name
                     ),
                     Label(
                         requestBody.b.aqi,
                         requestBody.b.latitude,
                         requestBody.b.longitude,
-                        requestBody.b.locationInfo
-                    ), 77777
+                        requestBody.b.locationInfo,
+                        requestBody.b.name
+                    ), 72500
                 )
             )
         }
@@ -36,63 +38,71 @@ class ApiServiceImpl : ApiService {
                         0,
                         Label(
                             34,
-                            37.504157809047776,
-                            127.06022311002017,
-                            "Gangnam District Apgujeong-dong"
+                            37.512,
+                            127.053,
+                            "Samseong-dong Samseong 1(il)-dong",
+                            null
                         ),
                         Label(
                             34,
-                            37.49932776515914,
-                            127.11275015026331,
-                            "Daechi-dong Daechi 2(i)-dong"
+                            37.484,
+                            127.03,
+                            "Seocho-dong Seocho 2(i)-dong",
+                            null
                         ),
                         12000
                     ),
                     Book(
                         1,
                         Label(
-                            53,
-                            37.49822441045347,
-                            127.00013559311628,
-                            "Songpa District Songpa 2(i)-dong"
+                            42,
+                            37.553,
+                            126.999,
+                            "Jung District Jangchung-dong",
+                            "장충동"
                         ),
                         Label(
-                            27,
-                            37.533846974675484,
-                            126.98528017848732,
-                            "Banpo-dong Banpo 4(sa)-dong"
+                            55,
+                            37.559,
+                            126.972,
+                            "Seoul Jung District",
+                            null
                         ),
                         15000
                     ),
                     Book(
                         2,
                         Label(
-                            70,
-                            37.5235049075288,
-                            126.92385725677013,
-                            "Yongsan District Yongsan 2(i)-ga-dong"
+                            46,
+                            37.476,
+                            126.931,
+                            "Gwanak District Sinwon-dong",
+                            "신원동"
                         ),
                         Label(
-                            38,
-                            37.50693084024564,
-                            126.93487409502268,
-                            "Yeongdeungpo District Singil 1(il)-dong"
+                            46,
+                            37.503,
+                            126.945,
+                            "Dongjak District Sangdo 2(i)-dong",
+                            "상도2동"
                         ),
                         8000
                     ),
                     Book(
                         3,
                         Label(
-                            42,
-                            37.48566448894246,
-                            126.88917964696884,
-                            "Gwanak District Sinwon-dong"
+                            38,
+                            37.569,
+                            126.825,
+                            "District Gayang 1(il)-dong",
+                            "가양1동"
                         ),
                         Label(
-                            37,
-                            37.48580628999009,
-                            126.88793241977693,
-                            "Guro District Guro 3(sam)-dong"
+                            53,
+                            37.53,
+                            126.837,
+                            "Gangseo District Hwagok 1(il)-dong",
+                            "화곡동"
                         ),
                         13200
                     )
