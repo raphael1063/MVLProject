@@ -2,9 +2,11 @@ package com.robin.mvlproject.ui.history
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Book
+import com.robin.mvlproject.data.entities.Label
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -25,6 +27,9 @@ class HistoryViewModel @Inject constructor(
     private val _totalPrice = MutableLiveData<Int>()
     val totalPrice: LiveData<Int> = _totalPrice
 
+    private val _actionHistoryItemClick = MutableLiveData<Event<Book>>()
+    val actionHistoryItemClick: LiveData<Event<Book>> = _actionHistoryItemClick
+
     init {
         getHistory("2021", "7")
     }
@@ -43,5 +48,9 @@ class HistoryViewModel @Inject constructor(
             }, {
 
             }).addTo(compositeDisposable)
+    }
+
+    fun onHistoryItemClicked(book: Book) {
+        _actionHistoryItemClick.value = Event(book)
     }
 }
