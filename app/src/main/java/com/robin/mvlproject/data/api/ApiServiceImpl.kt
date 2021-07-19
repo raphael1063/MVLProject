@@ -15,13 +15,13 @@ class ApiServiceImpl : ApiService {
                         requestBody.a.aqi,
                         requestBody.a.latitude,
                         requestBody.a.longitude,
-                        requestBody.a.name
+                        requestBody.a.locationInfo
                     ),
                     Label(
                         requestBody.b.aqi,
                         requestBody.b.latitude,
                         requestBody.b.longitude,
-                        requestBody.b.name
+                        requestBody.b.locationInfo
                     ), 77777
                 )
             )
@@ -35,66 +35,66 @@ class ApiServiceImpl : ApiService {
                     Book(
                         0,
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            34,
+                            37.504157809047776,
+                            127.06022311002017,
+                            "Gangnam District Apgujeong-dong"
                         ),
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            34,
+                            37.49932776515914,
+                            127.11275015026331,
+                            "Daechi-dong Daechi 2(i)-dong"
                         ),
-                        10000
+                        12000
                     ),
                     Book(
                         1,
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            53,
+                            37.49822441045347,
+                            127.00013559311628,
+                            "Songpa District Songpa 2(i)-dong"
                         ),
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            27,
+                            37.533846974675484,
+                            126.98528017848732,
+                            "Banpo-dong Banpo 4(sa)-dong"
                         ),
-                        10000
+                        15000
                     ),
                     Book(
                         2,
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            70,
+                            37.5235049075288,
+                            126.92385725677013,
+                            "Yongsan District Yongsan 2(i)-ga-dong"
                         ),
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            38,
+                            37.50693084024564,
+                            126.93487409502268,
+                            "Yeongdeungpo District Singil 1(il)-dong"
                         ),
-                        10000
+                        8000
                     ),
                     Book(
                         3,
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            42,
+                            37.48566448894246,
+                            126.88917964696884,
+                            "Gwanak District Sinwon-dong"
                         ),
                         Label(
-                            40,
-                            36.564,
-                            127.001,
-                            "서울시 강남구"
+                            37,
+                            37.48580628999009,
+                            126.88793241977693,
+                            "Guro District Guro 3(sam)-dong"
                         ),
-                        10000
+                        13200
                     )
                 )
             )
