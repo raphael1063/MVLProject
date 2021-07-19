@@ -20,7 +20,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 
     override fun start() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcv_container, HomeFragment.instance)
+            .add(R.id.fcv_container, HomeFragment.getInstance())
             .commit()
     }
 
@@ -51,6 +51,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
                 }
             })
             updateLabel.observe(this@MainActivity, {
+                super.onBackPressed()
+            })
+            moveToPosition.observe(this@MainActivity, {
+                super.onBackPressed()
                 super.onBackPressed()
             })
         }
