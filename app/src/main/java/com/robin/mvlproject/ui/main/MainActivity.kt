@@ -5,6 +5,7 @@ import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseActivity
 import com.robin.mvlproject.data.entities.Step.*
 import com.robin.mvlproject.databinding.ActivityMainBinding
+import com.robin.mvlproject.ext.addFragment
 import com.robin.mvlproject.ui.detail.DetailFragment
 import com.robin.mvlproject.ui.history.HistoryFragment
 import com.robin.mvlproject.ui.home.HomeFragment
@@ -13,9 +14,7 @@ import com.robin.mvlproject.ui.price.PriceFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(
-    R.layout.activity_main
-) {
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -28,35 +27,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
     override fun observe() {
         with(viewModel) {
             openLabelLog.observe(this@MainActivity, { event ->
-                event.getContentIfNotHandled()?.let {
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, LabelLogFragment.getInstance(it))
-                        .addToBackStack(null)
-                        .commit()
+                event.getContentIfNotHandled()?.let { labelType ->
+                    addFragment(LabelLogFragment.getInstance(labelType), R.id.fcv_container, true)
                 }
             })
             openDetail.observe(this@MainActivity, { event ->
                 event.getContentIfNotHandled()?.let { label ->
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, DetailFragment.getInstance(label))
-                        .addToBackStack(null)
-                        .commit()
+                    addFragment(DetailFragment.getInstance(label), R.id.fcv_container, true)
                 }
             })
             openPrice.observe(this@MainActivity, { event ->
                 event.getContentIfNotHandled()?.let { list ->
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, PriceFragment.getInstance(list[0], list[1]))
-                        .addToBackStack(null)
-                        .commit()
+                    addFragment(PriceFragment.getInstance(list[0], list[1]), R.id.fcv_container, true)
                 }
             })
             openHistory.observe(this@MainActivity, { event ->
                 event.getContentIfNotHandled()?.let {
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.fcv_container, HistoryFragment.getInstance())
-                        .addToBackStack(null)
-                        .commit()
+                    addFragment(HistoryFragment.getInstance(), R.id.fcv_container, true)
                 }
             })
             updateLabel.observe(this@MainActivity, {
