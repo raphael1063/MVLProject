@@ -8,6 +8,7 @@ import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
+import com.robin.mvlproject.data.entities.LabelType
 import com.robin.mvlproject.data.entities.LabelType.*
 import com.robin.mvlproject.data.entities.MarkerButtonState
 import com.robin.mvlproject.data.entities.MarkerButtonState.*
@@ -53,6 +54,9 @@ class HomeViewModel @Inject constructor(
 
     private val _actionLabelBClicked = MutableLiveData<Event<Label>>()
     val actionLabelBClicked: LiveData<Event<Label>> = _actionLabelBClicked
+
+    private val _actionEmptyLabelClicked = MutableLiveData<Event<LabelType>>()
+    val actionEmptyLabelClicked: LiveData<Event<LabelType>> = _actionEmptyLabelClicked
 
     private val _actionBookClicked = MutableLiveData<Event<List<Label>>>()
     val actionBookClicked: LiveData<Event<List<Label>>> = _actionBookClicked
@@ -147,6 +151,8 @@ class HomeViewModel @Inject constructor(
     fun onLabelAClicked() {
         _labelA.value?.let {
             _actionLabelAClicked.value = Event(it)
+        } ?: run {
+            _actionEmptyLabelClicked.value = Event(A)
         }
     }
 
@@ -154,6 +160,8 @@ class HomeViewModel @Inject constructor(
     fun onLabelBClicked() {
         _labelB.value?.let {
             _actionLabelBClicked.value = Event(it)
+        } ?: run {
+            _actionEmptyLabelClicked.value = Event(B)
         }
     }
 
@@ -161,43 +169,49 @@ class HomeViewModel @Inject constructor(
         _centerMarkerVisible.value = false
         when (_markerState.value) {
             NOTHING_SELECTED -> {
+                setLabel(currentLabel(A))
                 _markerState.value = A_SELECTED
-                Label(
-                    0,
-                    A,
-                    currentLocation,
-                    currentLatitude,
-                    currentLongitude,
-                    currentAQI,
-                    null
-                ).also {
-                    _labelA.value = it
-                    insertLabel(it)
-                }
-
             }
             A_SELECTED -> {
+                setLabel(currentLabel(B))
                 _markerState.value = B_SELECTED
-                Label(
-                    0,
-                    B,
-                    currentLocation,
-                    currentLatitude,
-                    currentLongitude,
-                    currentAQI,
-                    null
-                ).also {
-                    _labelB.value = it
-                    insertLabel(it)
-                }
             }
             B_SELECTED -> {
-                if (_labelA.value != null && _labelB.value != null) {
+                if (_labelA.value == null) {
+                    setLabel(currentLabel(A))
+                    _markerState.value = BOTH_SELECTED
+                } else {
                     _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
                 }
+            }
+            BOTH_SELECTED -> {
+                _actionBookClicked.value = Event(listOf(_labelA.value!!, _labelB.value!!))
                 Timber.d("BOOK CLICKED : labelA = ${_labelA.value} | labelB = ${_labelB.value}")
             }
         }
+    }
+
+    private fun setLabel(label: Label) {
+        label.also {
+            if (label.type == A) {
+                _labelA.value = it
+            } else {
+                _labelB.value = it
+            }
+            insertLabel(it)
+        }
+    }
+
+    private fun currentLabel(type: LabelType): Label {
+        return Label(
+            0,
+            type,
+            currentLocation,
+            currentLatitude,
+            currentLongitude,
+            currentAQI,
+            null
+        )
     }
 
     //레이블 업데이트 (닉네임 변경)
@@ -205,10 +219,20 @@ class HomeViewModel @Inject constructor(
         _clearMap.value = Event(Unit)
         if (label.type == A) {
             _labelA.value = label
-            _labelB.value = _labelB.value
+            if (_labelB.value != null) {
+                _labelB.value = _labelB.value
+                _markerState.value = BOTH_SELECTED
+            } else {
+                _markerState.value = A_SELECTED
+            }
         } else {
-            _labelA.value = _labelA.value
             _labelB.value = label
+            if (_labelA.value != null) {
+                _labelA.value = _labelA.value
+                _markerState.value = BOTH_SELECTED
+            } else {
+                _markerState.value = B_SELECTED
+            }
         }
     }
 

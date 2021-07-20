@@ -7,6 +7,7 @@ import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
+import com.robin.mvlproject.data.entities.LabelType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,6 +15,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: RepositoryImpl
 ) : BaseViewModel() {
+
+    private val _openLabelLog = MutableLiveData<Event<LabelType>>()
+    val openLabelLog: LiveData<Event<LabelType>> = _openLabelLog
 
     private val _openDetail = MutableLiveData<Event<Label>>()
     val openDetail: LiveData<Event<Label>> = _openDetail
@@ -29,6 +33,10 @@ class MainViewModel @Inject constructor(
 
     private val _moveToPosition = MutableLiveData<Book>()
     val moveToPosition: LiveData<Book> = _moveToPosition
+
+    fun openLabelLog(labelType: LabelType) {
+        _openLabelLog.value = Event(labelType)
+    }
 
     fun openDetail(label: Label) {
         _openDetail.value = Event(label)

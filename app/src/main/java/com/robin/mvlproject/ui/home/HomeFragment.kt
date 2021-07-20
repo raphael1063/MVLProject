@@ -109,6 +109,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                     sharedViewModel.openDetail(label)
                 }
             })
+            actionEmptyLabelClicked.observe(viewLifecycleOwner, { event ->
+                event.getContentIfNotHandled()?.let {
+                    sharedViewModel.openLabelLog(it)
+                }
+            })
             //Book 버튼 클릭
             actionBookClicked.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let { list ->

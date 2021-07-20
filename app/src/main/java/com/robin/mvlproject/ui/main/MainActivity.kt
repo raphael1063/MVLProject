@@ -8,6 +8,7 @@ import com.robin.mvlproject.databinding.ActivityMainBinding
 import com.robin.mvlproject.ui.detail.DetailFragment
 import com.robin.mvlproject.ui.history.HistoryFragment
 import com.robin.mvlproject.ui.home.HomeFragment
+import com.robin.mvlproject.ui.labellog.LabelLogFragment
 import com.robin.mvlproject.ui.price.PriceFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 
     override fun observe() {
         with(viewModel) {
+            openLabelLog.observe(this@MainActivity, { event ->
+                event.getContentIfNotHandled()?.let {
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.fcv_container, LabelLogFragment.getInstance(it))
+                        .addToBackStack(null)
+                        .commit()
+                }
+            })
             openDetail.observe(this@MainActivity, { event ->
                 event.getContentIfNotHandled()?.let { label ->
                     supportFragmentManager.beginTransaction()
