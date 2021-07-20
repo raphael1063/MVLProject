@@ -27,7 +27,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
     }
 
     override fun observe() {
-        viewModel.updateLabel.observe(this, {
+        viewModel.updateLabel.observe(viewLifecycleOwner, {
             sharedViewModel.updateLabel(it)
         })
     }

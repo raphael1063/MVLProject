@@ -27,7 +27,7 @@ class PriceFragment : BaseFragment<FragmentPriceBinding>(
     }
 
     override fun observe() {
-        viewModel.actionHistoryButtonClicked.observe(this, { event ->
+        viewModel.actionHistoryButtonClicked.observe(viewLifecycleOwner, { event ->
             event.getContentIfNotHandled()?.let {
                 sharedViewModel.openHistory()
             }

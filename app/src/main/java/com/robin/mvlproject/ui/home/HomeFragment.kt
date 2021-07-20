@@ -67,13 +67,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun observe() {
         with(viewModel) {
             //지도에서 마커 제거
-            clearMap.observe(this@HomeFragment, { event ->
+            clearMap.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let {
                     map?.clear()
                 }
             })
             //카메라 이동
-            moveCamera.observe(this@HomeFragment, { latLng ->
+            moveCamera.observe(viewLifecycleOwner, { latLng ->
                 map?.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         LatLng(latLng[0], latLng[1]),
@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                     )
                 )
             })
-            labelA.observe(this@HomeFragment, {
+            labelA.observe(viewLifecycleOwner, {
                 map?.addMarker(
                     MarkerOptions()
                         .position(LatLng(it.latitude, it.longitude))
@@ -89,7 +89,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                 )
             })
-            labelB.observe(this@HomeFragment, {
+            labelB.observe(viewLifecycleOwner, {
                 map?.addMarker(
                     MarkerOptions()
                         .position(LatLng(it.latitude, it.longitude))
@@ -98,19 +98,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 )
             })
             //A 레이블 클릭
-            actionLabelAClicked.observe(this@HomeFragment, { event ->
+            actionLabelAClicked.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let { label ->
                     sharedViewModel.openDetail(label)
                 }
             })
             //B 레이블 클릭
-            actionLabelBClicked.observe(this@HomeFragment, { event ->
+            actionLabelBClicked.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let { label ->
                     sharedViewModel.openDetail(label)
                 }
             })
             //Book 버튼 클릭
-            actionBookClicked.observe(this@HomeFragment, { event ->
+            actionBookClicked.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let { list ->
                     sharedViewModel.openPrice(list)
                 }
@@ -118,10 +118,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         }
         with(sharedViewModel) {
             //레이블 업데이트
-            updateLabel.observe(this@HomeFragment, { label ->
+            updateLabel.observe(viewLifecycleOwner, { label ->
                 viewModel.updateLabel(label)
             })
-            moveToPosition.observe(this@HomeFragment, { book ->
+            moveToPosition.observe(viewLifecycleOwner, { book ->
                 viewModel.moveToPosition(book)
             })
         }

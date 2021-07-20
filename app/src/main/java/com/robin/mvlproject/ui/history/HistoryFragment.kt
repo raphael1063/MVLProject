@@ -31,10 +31,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
 
     override fun observe() {
         with(viewModel) {
-            historyList.observe(this@HistoryFragment, {
+            historyList.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
             })
-            actionHistoryItemClick.observe(this@HistoryFragment, { event ->
+            actionHistoryItemClick.observe(viewLifecycleOwner, { event ->
                 event.getContentIfNotHandled()?.let {
                     sharedViewModel.moveToPosition(it)
                 }
