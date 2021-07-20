@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
+import com.robin.mvlproject.base.EN
+import com.robin.mvlproject.base.OK
 import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
@@ -84,7 +86,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getCurrentLocationInfo(lat: Double, lng: Double) {
         getAQI(lat, lng)
-        getLocation(lat, lng, "en")
+        getLocation(lat, lng, EN)
         currentLatitude = lat
         currentLongitude = lng
     }
@@ -94,7 +96,7 @@ class HomeViewModel @Inject constructor(
         repository.getAQI(lat, lng)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
-                if (result.status == "ok") {
+                if (result.status == OK) {
                     _aqi.value = result.data.aqi
                     currentAQI = result.data.aqi
                 } else {

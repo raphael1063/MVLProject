@@ -2,6 +2,7 @@ package com.robin.mvlproject.di
 
 import android.content.Context
 import androidx.room.Room
+import com.robin.mvlproject.base.ROOM_DB
 import com.robin.mvlproject.data.AppDatabase
 import com.robin.mvlproject.data.dao.BookDao
 import com.robin.mvlproject.data.dao.LabelDao
@@ -29,6 +30,6 @@ object LocalDBModule {
     @Singleton
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, AppDatabase::class.java, "room_db").build()
+        Room.databaseBuilder(context, AppDatabase::class.java, ROOM_DB).build()
 
 }

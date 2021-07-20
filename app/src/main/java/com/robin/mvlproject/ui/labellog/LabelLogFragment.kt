@@ -5,6 +5,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
+import com.robin.mvlproject.base.LABEL_TYPE
 import com.robin.mvlproject.data.entities.LabelType
 import com.robin.mvlproject.databinding.FragmentLabelLogBinding
 import com.robin.mvlproject.ui.main.MainViewModel
@@ -25,7 +26,7 @@ class LabelLogFragment : BaseFragment<FragmentLabelLogBinding>(
 
     override fun start() {
         binding.rvLabelLogList.adapter = adapter
-        viewModel.loadData(requireArguments().getSerializable("LabelType") as LabelType)
+        viewModel.loadData(requireArguments().getSerializable(LABEL_TYPE) as LabelType)
     }
 
     override fun observe() {
@@ -44,7 +45,7 @@ class LabelLogFragment : BaseFragment<FragmentLabelLogBinding>(
     companion object {
         fun getInstance(labelType: LabelType) = LabelLogFragment().apply {
             arguments = Bundle().apply {
-                putSerializable("LabelType", labelType)
+                putSerializable(LABEL_TYPE, labelType)
             }
         }
     }

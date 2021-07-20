@@ -5,6 +5,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
+import com.robin.mvlproject.base.LABEL
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.databinding.FragmentDetailBinding
 import com.robin.mvlproject.ui.main.MainViewModel
@@ -21,7 +22,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
 
     override fun start() {
         binding.vm = viewModel
-        requireArguments().getParcelable<Label>("label")?.let { label ->
+        requireArguments().getParcelable<Label>(LABEL)?.let { label ->
             viewModel.loadData(label)
         }
     }
@@ -36,7 +37,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(
         fun getInstance(label: Label): DetailFragment {
             return DetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable("label", label)
+                    putParcelable(LABEL, label)
                 }
             }
         }

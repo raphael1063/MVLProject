@@ -3,14 +3,14 @@ package com.robin.mvlproject.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.robin.mvlproject.data.RepositoryImpl
+import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Label
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: RepositoryImpl
+    private val repository: Repository
 ) : ViewModel() {
 
     private val _label = MutableLiveData<Label>()
