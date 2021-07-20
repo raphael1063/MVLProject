@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onCameraMove() {
-        if (_markerState.value != B_SELECTED) {
+        if (_markerState.value != BOTH_SELECTED) {
             _centerMarkerVisible.value = true
         }
     }
@@ -176,7 +176,7 @@ class HomeViewModel @Inject constructor(
             }
             A_SELECTED -> {
                 setLabel(currentLabel(B))
-                _markerState.value = B_SELECTED
+                _markerState.value = BOTH_SELECTED
             }
             B_SELECTED -> {
                 if (_labelA.value == null) {
