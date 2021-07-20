@@ -22,7 +22,9 @@ interface Repository {
 
     fun getLabelByLanLng(lat: Double, lng: Double): Single<Label>
 
-    fun updateLabel(label: Label): Completable
+    fun updateLabelName(label: Label): Completable
+
+    fun getTableRowCount(): Single<Long>
 
     fun insertBook(book: Book) : Completable
 

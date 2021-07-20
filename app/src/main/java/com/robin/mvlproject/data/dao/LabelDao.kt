@@ -23,6 +23,9 @@ interface LabelDao {
     @Query("SELECT * FROM label WHERE latitude=:lat AND longitude=:lng")
     fun getLabelByLanLng(lat: Double, lng: Double): Single<Label>
 
+    @Query("SELECT COUNT(*) FROM label")
+    fun getTableRowCount(): Single<Long>
+
     @Update
     fun updateLabelName(label: Label): Completable
 }

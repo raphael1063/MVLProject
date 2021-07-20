@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 data class Label(
 
     @PrimaryKey(autoGenerate = true)
-    val idx: Long,
+    var idx: Long,
 
     @ColumnInfo(name = "labelType")
     var type: LabelType?,

@@ -1,6 +1,5 @@
 package com.robin.mvlproject.ui.home
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
@@ -21,7 +20,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.floor
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -67,11 +65,11 @@ class HomeViewModel @Inject constructor(
     private var currentLongitude = 0.0
     private lateinit var currentLocation: String
     private var currentAQI = 0
+    private var labelTableCount = 0L
 
     fun init(lat: Double, lng: Double) {
         getLabelByLatLng(lat, lng)
-        currentLatitude = lat
-        currentLongitude = lng
+        getTableRowCount()
     }
 
     fun onCameraMove() {
@@ -86,7 +84,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getCurrentLocationInfo(lat: Double, lng: Double) {
         getAQI(lat, lng)
-        getLocation(lat, lng, EN)
+        getLocationInfo(lat, lng, EN)
         currentLatitude = lat
         currentLongitude = lng
     }
@@ -108,7 +106,7 @@ class HomeViewModel @Inject constructor(
     }
 
     //위치정보를 받는 API Call
-    private fun getLocation(lat: Double, lng: Double, lang: String) {
+    private fun getLocationInfo(lat: Double, lng: Double, lang: String) {
         repository.getLocation(lat, lng, lang)
             .subscribeOn(Schedulers.computation())
             .map { result ->
@@ -138,6 +136,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getLabelByLatLng(lat: Double, lng: Double) {
         repository.getLabelByLanLng(lat.getFloor3(), lng.getFloor3())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 currentLocation = it.locationInfo
@@ -146,6 +145,17 @@ class HomeViewModel @Inject constructor(
                 getAQI(lat, lng)
             }, {
                 getCurrentLocationInfo(lat, lng)
+            }).addTo(compositeDisposable)
+    }
+
+    private fun getTableRowCount() {
+        repository.getTableRowCount()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                labelTableCount = it
+            },{
+
             }).addTo(compositeDisposable)
     }
 
@@ -200,7 +210,10 @@ class HomeViewModel @Inject constructor(
             } else {
                 _labelB.value = it
             }
-            insertLabel(it)
+            insertLabel(it.apply {
+                idx = labelTableCount
+            })
+
         }
     }
 

@@ -42,7 +42,10 @@ class RepositoryImpl @Inject constructor(
     override fun getLabelByLanLng(lat: Double, lng: Double): Single<Label> =
         labelDao.getLabelByLanLng(lat, lng)
 
-    override fun updateLabel(label: Label): Completable =
+    override fun getTableRowCount(): Single<Long> =
+        labelDao.getTableRowCount()
+
+    override fun updateLabelName(label: Label): Completable =
         labelDao.updateLabelName(label)
 
     override fun insertBook(book: Book): Completable =
