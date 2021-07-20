@@ -7,7 +7,9 @@ import com.robin.mvlproject.data.entities.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RepositoryImpl @Inject constructor(
     private val aqiApiService: AQIApiService,
     private val locationApiService: LocationApiService,

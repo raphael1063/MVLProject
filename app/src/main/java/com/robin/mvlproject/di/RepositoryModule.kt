@@ -7,6 +7,7 @@ import com.robin.mvlproject.data.api.ApiService
 import com.robin.mvlproject.data.api.LocationApiService
 import com.robin.mvlproject.data.dao.BookDao
 import com.robin.mvlproject.data.dao.LabelDao
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,15 +16,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+abstract class RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideRepository(
-        aqiApiService: AQIApiService,
-        locationApiService: LocationApiService,
-        apiService: ApiService,
-        labelDao: LabelDao,
-        bookDao: BookDao
-    ): Repository = RepositoryImpl(aqiApiService, locationApiService, apiService, labelDao, bookDao)
+    @Binds
+     abstract fun provideRepository(repositoryImpl: RepositoryImpl): Repository
 }
