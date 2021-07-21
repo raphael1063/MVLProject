@@ -19,6 +19,7 @@ android {
         versionName "1.0"
         buildConfigField "String", "AQI_URL", '"https://api.waqi.info"'
         buildConfigField "String", "LOCATION_URL", '"https://api.bigdatacloud.net"'
+        buildConfigField "String", "AQI_TOKEN", '"5819eec42dade566aef237637f706e9e656ba8de"'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

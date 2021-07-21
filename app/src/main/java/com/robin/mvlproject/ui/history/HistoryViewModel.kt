@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.RepositoryImpl
+import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Book
-import com.robin.mvlproject.data.entities.Label
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val repository: RepositoryImpl
+    private val repository: Repository
 ) : BaseViewModel() {
 
     private val _historyList = MutableLiveData<List<Book>>()
@@ -36,6 +35,7 @@ class HistoryViewModel @Inject constructor(
 
     private fun getHistory(year: String, month: String) {
         repository.getHistory(year, month)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _historyList.value = it

@@ -12,9 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val repository: RepositoryImpl
-) : BaseViewModel() {
+class MainViewModel @Inject constructor() : BaseViewModel() {
 
     private val _openLabelLog = MutableLiveData<Event<LabelType>>()
     val openLabelLog: LiveData<Event<LabelType>> = _openLabelLog

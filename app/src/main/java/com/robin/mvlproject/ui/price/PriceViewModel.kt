@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.RepositoryImpl
+import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PriceViewModel @Inject constructor(
-    private val repository: RepositoryImpl
-) : BaseViewModel() {
+    private val repository: Repository) : BaseViewModel() {
 
     private val _locationA = MutableLiveData<String>()
     val locationA: LiveData<String> = _locationA
@@ -39,6 +38,7 @@ class PriceViewModel @Inject constructor(
 
     private fun getBooks(booksRequest: BooksRequest) {
         repository.getBooks(booksRequest)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _books.value = it

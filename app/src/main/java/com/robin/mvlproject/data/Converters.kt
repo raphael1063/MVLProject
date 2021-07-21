@@ -19,10 +19,4 @@ class Converters {
     @TypeConverter
     fun jsonToLabel(value: String): Label = Gson().fromJson(value, Label::class.java)
 
-    @TypeConverter
-    fun labelListToJson(value: List<Label>): String = Gson().toJson(value)
-
-    @TypeConverter
-    fun jsonToLabelList(value: String) = Gson().fromJson(value, Array<Label>::class.java).toList()
-
 }

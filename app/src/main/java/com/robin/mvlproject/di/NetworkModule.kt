@@ -1,10 +1,7 @@
 package com.robin.mvlproject.di
 
 import com.robin.mvlproject.BuildConfig
-import com.robin.mvlproject.base.AQI
-import com.robin.mvlproject.base.AQI_RETROFIT
-import com.robin.mvlproject.base.LOCATION
-import com.robin.mvlproject.base.LOCATION_RETROFIT
+import com.robin.mvlproject.base.*
 import com.robin.mvlproject.data.api.*
 import dagger.Module
 import dagger.Provides

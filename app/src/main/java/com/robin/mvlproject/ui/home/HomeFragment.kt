@@ -137,7 +137,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             setOnCameraIdleListener(this@HomeFragment)
             setOnCameraMoveListener(this@HomeFragment)
         }
-        viewModel.moveCamera()
+        viewModel.setCameraReady()
     }
 
     override fun onCameraMove() {
