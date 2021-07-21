@@ -6,7 +6,7 @@ import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.base.EN
 import com.robin.mvlproject.base.OK
-import com.robin.mvlproject.data.RepositoryImpl
+import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType
@@ -18,12 +18,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: RepositoryImpl
+    private val repository: Repository
 ) : BaseViewModel() {
 
     //대기질 지수
@@ -61,6 +62,8 @@ class HomeViewModel @Inject constructor(
     private val _actionBookClicked = MutableLiveData<Event<List<Label>>>()
     val actionBookClicked: LiveData<Event<List<Label>>> = _actionBookClicked
 
+    private val isCameraReady: PublishSubject<Boolean> = PublishSubject.create()
+
     private var currentLatitude = 0.0
     private var currentLongitude = 0.0
     private lateinit var currentLocation: String
@@ -68,8 +71,13 @@ class HomeViewModel @Inject constructor(
     private var labelTableCount = 0L
 
     fun init(lat: Double, lng: Double) {
-        getLabelByLatLng(lat, lng)
         getTableRowCount()
+        isCameraReady.observeOn(AndroidSchedulers.mainThread())
+            .subscribe { ready ->
+            if(ready) {
+                moveCamera(lat, lng)
+            }
+        }.addTo(compositeDisposable)
     }
 
     fun onCameraMove() {
@@ -127,6 +135,7 @@ class HomeViewModel @Inject constructor(
         label.latitude = label.latitude.getFloor3()
         label.longitude = label.longitude.getFloor3()
         repository.insertLabel(label)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
             }, {
@@ -148,13 +157,14 @@ class HomeViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
+    // 룸에 저장된 레이블의 총 개수를 가져온
     private fun getTableRowCount() {
         repository.getTableRowCount()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 labelTableCount = it
-            },{
+            }, {
 
             }).addTo(compositeDisposable)
     }
@@ -268,7 +278,11 @@ class HomeViewModel @Inject constructor(
         _moveCamera.value = listOf(lat, lng)
     }
 
-    fun moveCamera() {
-        _moveCamera.value = listOf(currentLatitude, currentLongitude)
+//    fun moveCamera() {
+//        _moveCamera.value = listOf(currentLatitude, currentLongitude)
+//    }
+
+    fun setCameraReady() {
+        isCameraReady.onNext(true)
     }
 }
