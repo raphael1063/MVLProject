@@ -138,6 +138,7 @@ class HomeViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                Timber.d("Label 저장 성공")
             }, {
                 Timber.d("Label 저장 실패: ${it.message}")
             }).addTo(compositeDisposable)
@@ -165,14 +166,16 @@ class HomeViewModel @Inject constructor(
             .subscribe({
                 labelTableCount = it
             }, {
-
+                Timber.d("Label 테이블 size 가져오기 실")
             }).addTo(compositeDisposable)
     }
 
     //레이블 A 클릭
     fun onLabelAClicked() {
         _labelA.value?.let {
-            _actionLabelAClicked.value = Event(it)
+            _actionLabelAClicked.value = Event(it.apply {
+                idx = labelTableCount
+            })
         } ?: run {
             _actionEmptyLabelClicked.value = Event(A)
         }
@@ -181,7 +184,9 @@ class HomeViewModel @Inject constructor(
     //레이블 B 클릭
     fun onLabelBClicked() {
         _labelB.value?.let {
-            _actionLabelBClicked.value = Event(it)
+            _actionLabelBClicked.value = Event(it.apply {
+                idx = labelTableCount
+            })
         } ?: run {
             _actionEmptyLabelClicked.value = Event(B)
         }

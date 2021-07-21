@@ -1,9 +1,6 @@
 package com.robin.mvlproject.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.robin.mvlproject.data.entities.Label
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -11,7 +8,7 @@ import io.reactivex.Single
 @Dao
 interface LabelDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertLabel(label: Label) : Completable
 
     @Query("SELECT * FROM label")
