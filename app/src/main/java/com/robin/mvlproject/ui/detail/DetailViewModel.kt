@@ -2,7 +2,6 @@ package com.robin.mvlproject.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.robin.mvlproject.base.BaseViewModel
 import com.robin.mvlproject.data.Repository
 import com.robin.mvlproject.data.entities.Label
@@ -51,7 +50,7 @@ class DetailViewModel @Inject constructor(
             .subscribe({
                 Timber.d("Nickname 업데이트 성공")
             }, {
-                Timber.d("Nickname 업데이트 실패")
+                Timber.d("Nickname 업데이트 실패 ${it.message}")
             }).addTo(compositeDisposable)
     }
 }

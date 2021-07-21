@@ -5,7 +5,6 @@ import androidx.fragment.app.viewModels
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
 import com.robin.mvlproject.databinding.FragmentHistoryBinding
-import com.robin.mvlproject.databinding.FragmentPriceBinding
 import com.robin.mvlproject.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

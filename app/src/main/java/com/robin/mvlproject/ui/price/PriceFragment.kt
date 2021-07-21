@@ -1,14 +1,12 @@
 package com.robin.mvlproject.ui.price
 
 import android.os.Bundle
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.robin.mvlproject.R
 import com.robin.mvlproject.base.BaseFragment
 import com.robin.mvlproject.base.LABEL_A
 import com.robin.mvlproject.base.LABEL_B
-import com.robin.mvlproject.data.entities.BooksRequest
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.databinding.FragmentPriceBinding
 import com.robin.mvlproject.ui.main.MainViewModel

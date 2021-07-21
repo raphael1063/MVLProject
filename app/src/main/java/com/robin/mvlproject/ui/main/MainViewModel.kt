@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.robin.mvlproject.Event
 import com.robin.mvlproject.base.BaseViewModel
-import com.robin.mvlproject.data.RepositoryImpl
 import com.robin.mvlproject.data.entities.Book
 import com.robin.mvlproject.data.entities.Label
 import com.robin.mvlproject.data.entities.LabelType

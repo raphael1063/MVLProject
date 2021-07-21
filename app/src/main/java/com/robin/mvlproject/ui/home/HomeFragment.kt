@@ -21,7 +21,6 @@ import com.robin.mvlproject.databinding.FragmentHomeBinding
 import com.robin.mvlproject.ext.getCurrentLocation
 import com.robin.mvlproject.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(

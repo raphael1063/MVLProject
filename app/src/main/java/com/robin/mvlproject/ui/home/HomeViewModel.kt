@@ -174,7 +174,7 @@ class HomeViewModel @Inject constructor(
     fun onLabelAClicked() {
         _labelA.value?.let {
             _actionLabelAClicked.value = Event(it.apply {
-                idx = labelTableCount
+                idx = if(idx == 0L) labelTableCount else idx
             })
         } ?: run {
             _actionEmptyLabelClicked.value = Event(A)
@@ -185,7 +185,7 @@ class HomeViewModel @Inject constructor(
     fun onLabelBClicked() {
         _labelB.value?.let {
             _actionLabelBClicked.value = Event(it.apply {
-                idx = labelTableCount
+                idx = if(idx == 0L) labelTableCount else idx
             })
         } ?: run {
             _actionEmptyLabelClicked.value = Event(B)
@@ -196,15 +196,18 @@ class HomeViewModel @Inject constructor(
         _centerMarkerVisible.value = false
         when (_markerState.value) {
             NOTHING_SELECTED -> {
+                getTableRowCount()
                 setLabel(currentLabel(A))
                 _markerState.value = A_SELECTED
             }
             A_SELECTED -> {
+                getTableRowCount()
                 setLabel(currentLabel(B))
                 _markerState.value = BOTH_SELECTED
             }
             B_SELECTED -> {
                 if (_labelA.value == null) {
+                    getTableRowCount()
                     setLabel(currentLabel(A))
                     _markerState.value = BOTH_SELECTED
                 } else {
@@ -225,9 +228,7 @@ class HomeViewModel @Inject constructor(
             } else {
                 _labelB.value = it
             }
-            insertLabel(it.apply {
-                idx = labelTableCount
-            })
+            insertLabel(it)
 
         }
     }
@@ -282,10 +283,6 @@ class HomeViewModel @Inject constructor(
     private fun moveCamera(lat: Double, lng: Double) {
         _moveCamera.value = listOf(lat, lng)
     }
-
-//    fun moveCamera() {
-//        _moveCamera.value = listOf(currentLatitude, currentLongitude)
-//    }
 
     fun setCameraReady() {
         isCameraReady.onNext(true)
